@@ -1,86 +1,25 @@
+
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next muse use-motion" lang="en">
+<html lang="en">
+    
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="hadoop," />
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。 预安装jdk1.8.0 从https:&#x2F;&#x2F;www.oracle.com&#x2F;java&#x2F;technologies&#x2F;javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。 如果本机上有别的java版本，">
-<meta property="og:type" content="article">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Shougong&#39;s Blog">
+    <title>Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装 - Shougong&#39;s Blog</title>
+    <meta name="author" content="Shougong">
+    
+        <meta name="keywords" content="hexo,python,">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Shougong","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。\n预安装jdk1.8.0\n从https://www.oracle.com/java/technologies/javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。\n如果本机上有别的java版本，可以采用两种方式，删除原先版本或者不安装该版本。\n设置安装包的权限：chmod +x jdk-8u261-linux-x64.rpm\nrpm安装jdk1.8.0_u261：rpm -ivh jdk-8u261-linux-x64.rpm\n在命令行输入以下命令来配置java路径：\n\n123export JAVA_HOME=/usr/java/jdk1.8.0_261-amd64/export PATH=$JAVA_HOME/bin:$PATHexport CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar\n\n\n然后令配置生效：\n\n1source /etc/profile\n\n\n在命令行中输入：java -version，如果显示下面内容，则说明安装成功。\n\n\n单机安装预配置当前系统\n关闭系统防火墙\n\n1234# close firewallsystemctl stop firewalld.service# disable firewall when open systemsystemctl disable firewalld.service\n\n\n创建软件的安装目录：mkdir /opt/modules\n修改/etc/hostname\n\n1sudo hostname hadoop01\n\n\n修改hosts文件\n\n1sudo vim /etc/hosts\n\n在其后面追加：\n1192.168.58.133\t\thadoop01\n\n上面内容对应ip和hostname。\n\n生成ssh-key，实现免密登陆。\n\n123ssh localhostssh-keygen -t rsa -P &#x27;&#x27; -f ~/.ssh/id_rsacat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys\n\n安装hadoop-2.10.1\n首先从官网下载hadoop-2.10.1：https://hadoop.apache.org/releases.html，已经在安装包里面了：hadoop-2.10.1.tar.gz\n同样的，如果存在已安装的hadoop，将其卸载。\n解压hadoop-2.10.1.tar.gz：tar -xzvf hadoop-2.10.1.tar.gz -C /opt/modules/\n配置系统环境变量：\n\n12export HADOOP_HOME=/opt/modules/hadoop-2.10.1export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin\n\n\n令环境变量生效：source /etc/profile\n在命令行中输入：hadoop，如果能输出下列内容，就说明配置成功：\n\n\n\n配置hadoop的环境变量，需要配置hadoop-env.sh、mapred-env.sh、yarn-env.sh三个文件，在三个文件中分别加入：\n\n1export JAVA_HOME=/usr/java/jdk1.8.0_261-amd64/\n\n\n配置HDFS\n\n修改配置文件conf/core-site.xml，添加以下内容：\n12345678910111213141516171819202122232425262728&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;!-- 配置hdfs的主节点, hdfs://hostname:9000 --&gt;  &lt;property&gt;      &lt;name&gt;fs.defaultFS&lt;/name&gt;      &lt;value&gt;hdfs://hadoop01:9000&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n\n上述配置的解析如下：\nfs.defaultFS：HDFS的默认访问路径，也是NameNode的访问地址。\nhadoop.tmp.dir：Hadoop数据文件的存放目录，该参数不配置会默认指向/tmp目录，开机重启后会消失，容易导致hadoop数据丢失。\n\n修改配置文件conf/hdfs-site.xml，加入以下内容：\n\n12345678910111213141516171819202122232425262728293031323334353637383940&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;!--配置HDFS的冗余度(副本数,默认是3个)--&gt;  &lt;property&gt;    &lt;name&gt;dfs.replication&lt;/name&gt;    &lt;value&gt;3&lt;/value&gt;  &lt;/property&gt;  &lt;!-- 配置不检查权限 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.permissions&lt;/name&gt;    &lt;value&gt;false&lt;/value&gt;  &lt;/property&gt;  &lt;!-- namenode数据块的物理存储位置 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp/dfs/name&lt;/value&gt;  &lt;/property&gt;  &lt;!-- datanode数据块的物理存储位置 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp/dfs/data&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\ndfs.replication：文件在HDFS系统中的副本数。\ndfs.permissions：是否对用户权限进行检查。\ndfs.namenode.name.dir：NameNode节点数据在本地文件系统的存放位置。\ndfs.datanode.data.dir：DataNode节点数据在本地文件系统的存放位置。\n\n修改slaves文件，配置DataNode节点，需要将所有的节点都加进去，单机版只需要加当前机器的节点即可，内容是hostname。\n\n1hadoop01\n\n\n配置mapred-site.xml文件，添加以下内容：\n\n12345678910111213141516171819202122232425262728&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;mapreduce.application.classpath&lt;/name&gt;    &lt;value&gt;$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n配置yarn-site.xml文件，添加以下内容：\n\n123456789101112131415161718192021222324252627282930&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;configuration&gt;&lt;!-- Site specific YARN configuration properties --&gt;  &lt;property&gt;    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;yarn.nodemanager.env-whitelist&lt;/name&gt;    &lt;value&gt;JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME&lt;/value&gt;  &lt;/property&gt;  &lt;!-- 配置resourcemanager所在节点与访问端口 hostname:8032 hostname通常为master节点--&gt;  &lt;property&gt;    &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;    &lt;value&gt;hadoop01:8032&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\nhadoop在启动之前需要先格式化NameNode：hadoop namenode -format\n\n在HADOOP_HOME目录下，输入：sbin/start-all.sh启动。\n\n在命令行输入：jps，如果显示以下内容，说明启动成功：\n\n\n\n安装ZooKeeper-3.6.2\n从apache官网下载一个ZooKeeper的稳定版本https://zookeeper.apache.org/releases.html，这里下载apache-zookeeper-3.6.2-bin.tar.gz\n同样的，如果存在已经安装好的zookeeper版本，就将其删除。\n将安装包解压到对应的安装目录：\n\n1tar -zxvf apache-zookeeper-3.6.2-bin.tar.gz -C /opt/modules/\n\n\n配置ZooKeeper的环境变量\n\n12export ZOOKEEPER_HOME=/opt/modules/apache-zookeeper-3.6.2-binexport PATH=$PATH:$ZOOKEEPER_HOME/bin:$ZOOKEEPER_HOME/conf\n\n\n在ZooKeeper安装目录下的conf文件夹中创建zoo.cfg文件，并在其中添加下列内容\n\n123456# 基本事件单元，用来指示一个心跳的时长，以毫秒为单位，默认是2000tickTime&#x3D;2000# ZooKeeper数据文件的存储位置dataDir&#x3D;&#x2F;opt&#x2F;modules&#x2F;apache-zookeeper-3.6.2-bin&#x2F;data# ZooKeeper供客户端连接的端口，默认是2181clientPort&#x3D;2181\n\n\n配置好后，进入ZooKeeper的安装目录，然后再命令行输入：bin/zkServer.sh start\n在命令行输入下述内容，如果能连接上就说明安装zookeeper成功：bin/zkCli.sh -server localhost:2181\n\n安装Hbase-2.3.2\n从apache官网上下载hbase-2.3.2的安装包http://hbase.apache.org/downloads.html，在提供的安装文件夹里已经有了：hbase-2.3.2-bin.tar.gz。\n将其解压到对应的安装目录：tar -xzvf hbase-2.3.2-bin.tar.gz -C /opt/modules/\n修改Hbase安装目录conf/hbase-env.sh文件，来指定运行的zookeeper和JAVA_HOME：\n\n12export JAVA_HOME=/usr/java/jdk1.8.0_261-amd64export HBASE_MANAGES_ZK=false\n\nHBASE_MANAGES_ZK：false表示使用独立的zookeeper，true表示不使用hbase自带的zookeeper，这里设置为false，使用独立的zookeeper以方便后期维护。\n\n修改Hbase安装目录下的conf/hbase-site.xml文件，来指定Hbase和ZooKeeper的本地数据存储目录，默认是/tmp。\n\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--/* * Licensed to the Apache Software Foundation (ASF) under one * or more contributor license agreements.  See the NOTICE file * distributed with this work for additional information * regarding copyright ownership.  The ASF licenses this file * to you under the Apache License, Version 2.0 (the * &quot;License&quot;); you may not use this file except in compliance * with the License.  You may obtain a copy of the License at * *     http://www.apache.org/licenses/LICEANSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */--&gt;&lt;configuration&gt;  &lt;!--    The following properties are set for running HBase as a single process on a    developer workstation. With this configuration, HBase is running in    &quot;stand-alone&quot; mode and without a distributed file system. In this mode, and    without further configuration, HBase and ZooKeeper data are stored on the    local filesystem, in a path under the value configured for `hbase.tmp.dir`.    This value is overridden from its default value of `/tmp` because many    systems clean `/tmp` on a regular basis. Instead, it points to a path within    this HBase installation directory.    Running against the `LocalFileSystem`, as opposed to a distributed    filesystem, runs the risk of data integrity issues and data loss. Normally    HBase will refuse to run in such an environment. Setting    `hbase.unsafe.stream.capability.enforce` to `false` overrides this behavior,    permitting operation. This configuration is for the developer workstation    only and __should not be used in production!__    See also https://hbase.apache.org/book.html#standalone_dist  --&gt;  &lt;!-- 存储目录 需要与HDFS NameNode端口一致--&gt;  &lt;property&gt;    &lt;name&gt;hbase.rootdir&lt;/name&gt;    &lt;value&gt;hdfs://hadoop01:9000/hbase&lt;/value&gt;  &lt;/property&gt;  &lt;!--  zookeeper数据存放目录 --&gt;  &lt;property&gt;    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;    &lt;value&gt;/opt/modules/hbase-2.3.2/zkData&lt;/value&gt;  &lt;/property&gt;  &lt;!-- hbabse临时文件存放目录 --&gt;  &lt;property&gt;      &lt;name&gt;hbase.tmp.dir&lt;/name&gt;      &lt;value&gt;/opt/modules/hbase-2.3.2/tmp&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n启动Hbase服务，在Hbase安装目录下，运行以下指令：bin/start-hbase.sh\n启动以后，在命令行输入：jps，如果显示HMaster，则运行成功，单机模式只有一个HMaster进程。\n停止Hbase服务：bin/stop-hbase.sh。\n\n安装mysqlHive的运行有内嵌、本地和远程模式，因为当前业务场景的问题，只需要本地模式即可，而本地模式需要依赖mysql。\n\n移除现有的mysql相关安装包：yum -y remove mysql*\n下载mysql安装的yum release：wget http://repo.mysql.com/mysql-community-release-el7.rpm\n使用rpm安装该依赖：rpm -ivh mysql-community-release-el7.rpm\n使用yum安装mysql最新版本：yum -y install mysql-server\n然后在命令行中输入下列指令，以开启mysql服务。\n\n123systemctl start mysqld   systemctl enable mysqldsystemctl status mysqld\n\n\nmysql刚安装好的时候，其密码是临时生成的，需要重新配置mysql的密码。\n\n通过下行指令可以得到临时生成的mysql密码，将其复制，记为temp password。\n1grep &#x27;password&#x27; /var/log/mysqld.log|tail -n 1\n\n然后使用下行指令修改mysql密码为自己的：\n1mysqladmin -uroot -p&quot;temp password&quot; password &quot;yours password&quot;\n\n使用自己的mysql登录密码登陆mysql：\n1mysql -uroot -p&quot;yours password&quot;\n\n如果进入则说明登录成功：\n\n\n\n为了与hive联调，需要在mysql中创建一个叫做hive_db的表，用于存放Hive元数据信息，并且创建hive用户，为其赋予全局外部访问权限，下面是mysql的执行sql语句：\n\n1234create databse hive_db;create user hive IDENTIFIED by &#x27;hive&#x27;;grant all privileges on hive_db.* to hive@&#x27;%&#x27; with grant option;flush privileges;\n\n安装hive-2.3.7Hive不需要安装集群模式，只需要在其中一个节点安装即可，这里选择hadoop01作为hive的安装节点。\n\n从apache官网上下载hive-2.3.7的安装包：https://mirrors.bfsu.edu.cn/apache/hive/hive-2.3.7/，在提供的安装文件夹中已经包含该安装包：apache-hive-2.3.7-bin.tar.gz。\n解压hive安装包到/opt/modules/：tar -xzvf apache-hive-2.3.7-bin.tar.gz -C /opt/modules/\n配置环境变量，在/etc/profile中添加以下内容：\n\n12export HIVE_HOME=/opt/modules/apache-hive-2.3.7-binexport PATH=$PATH:$HIVE_HOME/bin\n\n然后执行：source /etc/profile使得配置生效。\n\n在命令行输入：hive –version，如果能输出hive的版本信息，则说明安装成功。\n\n\n\n\n创建hive数据仓库目录\n\n1234hadoop fs -mkdir\t /tmphadoop fs -mkdir -p  /user/hive/warehousehadoop fs -chmod g+w /tmphadoop fs -chmod g+w /user/hive/warehouse\n\n/tmp：hive任务在HDFS中的缓存目录。\n/user/hive/warehouse：hive数据仓库目录，用于存储hive创建的数据库。\n这两个路径可以在配置文件中更改。\n\n上传java连接mysql的驱动包mysql-connector-java-8.0.22.jar到$HIVE_HOME/lib中。\n修改hive的配置文件\n\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--   Licensed to the Apache Software Foundation (ASF) under one or more   contributor license agreements.  See the NOTICE file distributed with   this work for additional information regarding copyright ownership.   The ASF licenses this file to You under the Apache License, Version 2.0   (the &quot;License&quot;); you may not use this file except in compliance with   the License.  You may obtain a copy of the License at       http://www.apache.org/licenses/LICENSE-2.0   Unless required by applicable law or agreed to in writing, software   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   See the License for the specific language governing permissions and   limitations under the License.--&gt;&lt;configuration&gt;  &lt;!-- WARNING!!! This file is auto generated for documentation purposes ONLY! --&gt;  &lt;!-- WARNING!!! Any changes you make to this file will be ignored by Hive.   --&gt;  &lt;!-- WARNING!!! You must make your changes in hive-site.xml instead.         --&gt;  &lt;!-- Hive Execution Parameters --&gt;  &lt;!-- mysql数据库连接信息 --&gt;  &lt;!-- 采取本地模式存储hive元数据库 --&gt;  &lt;property&gt;      &lt;name&gt;hive.metastore.local&lt;/name&gt;      &lt;value&gt;true&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql连接地址, 此处连接本地mysql数据库, 可以更改为连接远程mysql数据库 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;      &lt;value&gt;jdbc:mysql://localhost:3306/hive_db?createDatabaseIfNotExist=true&lt;/value&gt;    &lt;/property&gt;  &lt;!-- 连接mysql的驱动类 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;      &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql用户名 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;      &lt;value&gt;hive&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql登录密码 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;      &lt;value&gt;P@ssw0rd&lt;/value&gt;    &lt;/property&gt;     &lt;!-- hive数据库在hdfs中的存放位置 --&gt;  &lt;property&gt;      &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;    &lt;value&gt;/user/hive/warehouse&lt;/value&gt;    &lt;description&gt;location of default database for the warehouse&lt;/description&gt;  &lt;/property&gt;    &lt;!-- hive本地缓存目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.exec.local.scratchdir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Local scratch space for Hive jobs&lt;/description&gt;  &lt;/property&gt;  &lt;!-- hive在hdfs中的缓存目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.exec.scratchdir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;HDFS root scratch dir for Hive jobs which gets created with write all (733) permission. For each connecting user, an HDFS scratch dir: $&#123;hive.exec.scratchdir&#125;/&amp;lt;username&amp;gt; is created, with $&#123;hive.scratch.dir.permission&#125;.&lt;/description&gt;  &lt;/property&gt;  &lt;!-- 从远程文件系统中添加资源的本地临时目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.downloaded.resources.dir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Temporary local directory for added resources in the remote file system.&lt;/description&gt;  &lt;/property&gt;  &lt;!-- hive运行时的结构化日志目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.querylog.location&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Location of Hive run time structured log file&lt;/description&gt;  &lt;/property&gt;  &lt;!-- 日志功能开启时, 存储操作日志的最高级目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.server2.logging.operation.log.location&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Top level directory where operation logs are stored if logging functionality is enabled&lt;/description&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n初始化元数据库：$HIVE_HOME/bin/schematool -dbType mysql -initSchema\n\n\n\n输出上述信息说明初始化数据成功。\n\n然后命令行输入hive，测试能否正常运行hive。\n\n\n有上述信息说明安装成功。\nhive整合hbase在hive安装目录下的conf/hive-site.xml文件中添加下列内容：\n1234567891011121314151617181920212223&lt;!-- 配置zookeeper集群访问地址 --&gt;&lt;property&gt;  &lt;name&gt;hive.zookeeper.quorum&lt;/name&gt;  &lt;value&gt;hadoop01:2181,hadoop02:2181,hadoop03:2181&lt;/value&gt;&lt;/property&gt;&lt;!-- 配置依赖的hbase、zookeeper的jar文件 --&gt;&lt;property&gt;  &lt;name&gt;hive.aux.jars.path&lt;/name&gt;  &lt;value&gt;  file:///opt/modules/hbase-2.3.2/lib/hbase-common-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-client-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-server-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-hadoop2-compat-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/netty-all-4.0.23.Final.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-protocol-2.3.2.jar,  file:///opt/modules/apache-zookeeper-3.6.2-bin/lib/zookeeper-3.6.2.jar,  &lt;/value&gt;&lt;/property&gt;&lt;property&gt;  &lt;name&gt;hive.server2.enable.doAs&lt;/name&gt;  &lt;value&gt;false&lt;/value&gt;  &lt;description&gt;Setting this property to true will have HiveServer2 execute Hive operations as the user making the calls to it.&lt;/description&gt;&lt;/property&gt;\n\n\n启动hiveserver2服务：\n\n1hive --service hiveserver2 &amp;\n\n\n\n另起一个shell，这里采用beeline的方式连接hive：\n\n12beeline!connect jdbc:hive2://hadoop01:10000\n\n如果显示下面结果就说明运行成功：\n\n\n\n到此，单机安装Hadoop-2.10.1+Hbase-2.3.2+Hive-2.3.7完毕，下面测试由hive直接创建hbase表：\n\n1CREATE TABLE hive_student(id INT, name STRING) STORED BY &#x27;org.apache.hadoop.hive.hbase.HBaseStorageHandler&#x27; WITH SERDEPROPERTIES (&quot;hbase.columns.mapping&quot; = &quot;:key,cf1:name&quot;) TBLPROPERTIES (&quot;hbase.table.name&quot; = &quot;hive_student&quot;);\n\n如果在hiveserver2那个shell框里面显示下列结果，说明创建成功：\n\n登陆hbase的web界面，可以看到创建的数据库表：\n\n伪分布式安装伪分布式安装实际是在一台机子上开多进程来模拟分布式。\n预配置当前系统\n关闭当前机子的防火墙\n\n1234# close firewallsystemctl stop firewalld.service# disable firewall when open systemsystemctl disable firewalld.service\n\n\n在当前机子上创建软件的安装目录：mkdir /opt/modules\n修改机子的/etc/hostname\n\n1sudo hostname hadoop01\n\n\n修改机子的hosts文件\n\n1sudo vim /etc/hosts\n\n在其后面追加：\n1192.168.58.133\t\thadoop01\n\n上面内容对应ip和hostname。\n\n生成ssh-key，实现免密登陆，集群配置的话需要在每台机子上执行下面的命令。\n\n123ssh localhostssh-keygen -t rsa -P &#x27;&#x27; -f ~/.ssh/id_rsacat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys\n\n安装hadoop-2.10.1\n首先从官网下载hadoop-2.10.1：https://hadoop.apache.org/releases.html，已经在安装包里面了：hadoop-2.10.1.tar.gz\n同样的，如果存在已安装的hadoop，将其卸载。\n解压hadoop-2.10.1.tar.gz：tar -xzvf hadoop-2.10.1.tar.gz -C /opt/modules/\n配置系统环境变量：\n\n12export HADOOP_HOME=/opt/modules/hadoop-2.10.1export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin\n\n\n令环境变量生效：source /etc/profile\n在命令行中输入：hadoop，如果能输出下列内容，就说明配置成功：\n\n\n\n\n配置hadoop的环境变量，需要配置hadoop-env.sh、mapred-env.sh、yarn-env.sh三个文件，在三个文件中分别加入：\n\n1export JAVA_HOME=/usr/java/jdk1.8.0_261-amd64/\n\n\n配置HDFS\n\n修改配置文件conf/core-site.xml，添加以下内容：\n12345678910111213141516171819202122232425262728&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;!-- 配置hdfs的主节点, hdfs://hostname:9000 --&gt;  &lt;property&gt;      &lt;name&gt;fs.defaultFS&lt;/name&gt;      &lt;value&gt;hdfs://hadoop01:9000&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n\n上述配置的解析如下：\nfs.defaultFS：HDFS的默认访问路径，也是NameNode的访问地址。\nhadoop.tmp.dir：Hadoop数据文件的存放目录，该参数不配置会默认指向/tmp目录，开机重启后会消失，容易导致hadoop数据丢失。\n\n修改配置文件conf/hdfs-site.xml，加入以下内容：\n\n12345678910111213141516171819202122232425262728293031323334353637383940&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;!--配置HDFS的冗余度(副本数,默认是3个)--&gt;  &lt;property&gt;    &lt;name&gt;dfs.replication&lt;/name&gt;    &lt;value&gt;3&lt;/value&gt;  &lt;/property&gt;  &lt;!-- 配置不检查权限 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.permissions&lt;/name&gt;    &lt;value&gt;false&lt;/value&gt;  &lt;/property&gt;  &lt;!-- namenode数据块的物理存储位置 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp/dfs/name&lt;/value&gt;  &lt;/property&gt;  &lt;!-- datanode数据块的物理存储位置 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp/dfs/data&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\ndfs.replication：文件在HDFS系统中的副本数。\ndfs.permissions：是否对用户权限进行检查。\ndfs.namenode.name.dir：NameNode节点数据在本地文件系统的存放位置。\ndfs.datanode.data.dir：DataNode节点数据在本地文件系统的存放位置。\n\n修改slaves文件，配置DataNode节点，需要将所有的节点都加进去，单机版只需要加当前机器的节点即可，内容是hostname。\n\n1hadoop01\n\n\n配置mapred-site.xml文件，添加以下内容：\n\n12345678910111213141516171819202122232425262728&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;mapreduce.application.classpath&lt;/name&gt;    &lt;value&gt;$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n配置yarn-site.xml文件，添加以下内容：\n\n123456789101112131415161718192021222324252627282930&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;configuration&gt;&lt;!-- Site specific YARN configuration properties --&gt;  &lt;property&gt;    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;yarn.nodemanager.env-whitelist&lt;/name&gt;    &lt;value&gt;JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME&lt;/value&gt;  &lt;/property&gt;  &lt;!-- 配置resourcemanager所在节点与访问端口 hostname:8032 hostname通常为master节点--&gt;  &lt;property&gt;    &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;    &lt;value&gt;hadoop01:8032&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\nhadoop在启动之前需要先格式化NameNode：hadoop namenode -format\n\n在HADOOP_HOME目录下，输入：sbin/start-all.sh启动。\n\n在命令行输入：jps，如果显示以下内容，说明启动成功：\n\n\n\n\n安装ZooKeeper-3.6.2\n从apache官网下载一个ZooKeeper的稳定版本https://zookeeper.apache.org/releases.html，这里下载apache-zookeeper-3.6.2-bin.tar.gz\n同样的，如果存在已经安装好的zookeeper版本，就将其删除。\n将安装包解压到对应的安装目录：\n\n1tar -zxvf apache-zookeeper-3.6.2-bin.tar.gz -C /opt/modules/\n\n\n配置ZooKeeper的环境变量\n\n12export ZOOKEEPER_HOME=/opt/modules/apache-zookeeper-3.6.2-binexport PATH=$PATH:$ZOOKEEPER_HOME/bin:$ZOOKEEPER_HOME/conf\n\n\n因为是伪分布式安装zookeeper，因此还需要配置不同进程的zoo.cfg配置文件，这里以模拟三台机子为例，hbase的伪分布式也按照此例。需要分别创建三个配置文件zoo1.cfg，zoo2.cfg，zoo3.cfg，分别对应如下配置：\nzoo1.cfg：\n\n\n123456789initLimit&#x3D;10syncLimit&#x3D;5# ZooKeeper数据文件的存储位置dataDir&#x3D;&#x2F;opt&#x2F;modules&#x2F;apache-zookeeper-3.6.2-bin&#x2F;1.data# ZooKeeper供客户端连接的端口，默认是2181clientPort&#x3D;2181server.1&#x3D;192.168.58.133:20881:30881server.2&#x3D;192.168.58.133:20882:30882server.3&#x3D;192.168.58.133:20883:30883\n\n\nzoo2.cfg：\n\n123456789initLimit&#x3D;10syncLimit&#x3D;5# ZooKeeper数据文件的存储位置dataDir&#x3D;&#x2F;opt&#x2F;modules&#x2F;apache-zookeeper-3.6.2-bin&#x2F;2.data# ZooKeeper供客户端连接的端口，默认是2181clientPort&#x3D;2181server.1&#x3D;192.168.58.133:20881:30881server.2&#x3D;192.168.58.133:20882:30882server.3&#x3D;192.168.58.133:20883:30883\n\n\nzoo3.cfg：\n\n123456789initLimit&#x3D;10syncLimit&#x3D;5# ZooKeeper数据文件的存储位置dataDir&#x3D;&#x2F;opt&#x2F;modules&#x2F;apache-zookeeper-3.6.2-bin&#x2F;3.data# ZooKeeper供客户端连接的端口，默认是2181clientPort&#x3D;2181server.1&#x3D;192.168.58.133:20881:30881server.2&#x3D;192.168.58.133:20882:30882server.3&#x3D;192.168.58.133:20883:30883\n\n\n配置好后，还需要分别建立1.data、2.data、3.data数据目录，并在对应目录下分别创建1.logs、2.logs、3.logs日志目录，以及分别创建myid文件，并令其中内容分别为1，2，3。\n配置好后，进入ZooKeeper的安装目录，然后在命令行输入：\n\n123bin/zkServer.sh start /opt/modules/apache-zookeeper-3.6.2-bin/conf/zoo1.cfgbin/zkServer.sh start /opt/modules/apache-zookeeper-3.6.2-bin/conf/zoo2.cfgbin/zkServer.sh start /opt/modules/apache-zookeeper-3.6.2-bin/conf/zoo3.cfg\n\n\n在命令行输入下述内容以查看服务状态：\n\n123bin/zkServer.sh status /opt/modules/apache-zookeeper-3.6.2-bin/conf/zoo1.cfgbin/zkServer.sh status /opt/modules/apache-zookeeper-3.6.2-bin/conf/zoo2.cfgbin/zkServer.sh status /opt/modules/apache-zookeeper-3.6.2-bin/conf/zoo3.cfg\n\n安装Hbase-2.3.2\n从apache官网上下载hbase-2.3.2的安装包http://hbase.apache.org/downloads.html，在提供的安装文件夹里已经有了：hbase-2.3.2-bin.tar.gz。\n将其解压到对应的安装目录：tar -xzvf hbase-2.3.2-bin.tar.gz -C /opt/modules/\n修改Hbase安装目录下的conf/hbase-site.xml文件，来指定Hbase和ZooKeeper的本地数据存储目录，默认是/tmp。\n\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--/* * Licensed to the Apache Software Foundation (ASF) under one * or more contributor license agreements.  See the NOTICE file * distributed with this work for additional information * regarding copyright ownership.  The ASF licenses this file * to you under the Apache License, Version 2.0 (the * &quot;License&quot;); you may not use this file except in compliance * with the License.  You may obtain a copy of the License at * *     http://www.apache.org/licenses/LICEANSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */--&gt;&lt;configuration&gt;  &lt;!--    The following properties are set for running HBase as a single process on a    developer workstation. With this configuration, HBase is running in    &quot;stand-alone&quot; mode and without a distributed file system. In this mode, and    without further configuration, HBase and ZooKeeper data are stored on the    local filesystem, in a path under the value configured for `hbase.tmp.dir`.    This value is overridden from its default value of `/tmp` because many    systems clean `/tmp` on a regular basis. Instead, it points to a path within    this HBase installation directory.    Running against the `LocalFileSystem`, as opposed to a distributed    filesystem, runs the risk of data integrity issues and data loss. Normally    HBase will refuse to run in such an environment. Setting    `hbase.unsafe.stream.capability.enforce` to `false` overrides this behavior,    permitting operation. This configuration is for the developer workstation    only and __should not be used in production!__    See also https://hbase.apache.org/book.html#standalone_dist  --&gt;  &lt;!-- 开启分布式模式  --&gt;  &lt;property&gt;    &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;    &lt;value&gt;true&lt;/value&gt;  &lt;/property&gt;  &lt;!-- Hbase数据存储目录 需要与HDFS NameNode端口一致--&gt;  &lt;property&gt;    &lt;name&gt;hbase.rootdir&lt;/name&gt;    &lt;value&gt;hdfs://hadoop01:9000/hbase&lt;/value&gt;  &lt;/property&gt;  &lt;!-- 配置zookeeper监听端口 --&gt;  &lt;property&gt;    &lt;name&gt;hbase.zookeeper.property.clientPort&lt;/name&gt;    &lt;value&gt;2181&lt;/value&gt;  &lt;/property&gt;  &lt;!--  zookeeper数据存放目录 --&gt;  &lt;property&gt;    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;    &lt;value&gt;/opt/modules/hbase-2.3.2/zkData&lt;/value&gt;  &lt;/property&gt;  &lt;!-- hbabse临时文件存放目录 --&gt;  &lt;property&gt;      &lt;name&gt;hbase.tmp.dir&lt;/name&gt;      &lt;value&gt;/opt/modules/hbase-2.3.2/tmp&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n启动Hbase服务，在Hbase安装目录下，运行以下指令：bin/start-hbase.sh\n启动以后，在命令行输入：jps，如果显示HMaster，hregionserver则表示安装成功。\n\n安装mysqlHive的运行有内嵌、本地和远程模式，因为当前业务场景的问题，只需要本地模式即可，而本地模式需要依赖mysql。\n\n移除现有的mysql相关安装包：yum -y remove mysql*\n下载mysql安装的yum release：wget http://repo.mysql.com/mysql-community-release-el7.rpm\n使用rpm安装该依赖：rpm -ivh mysql-community-release-el7.rpm\n使用yum安装mysql最新版本：yum -y install mysql-server\n然后在命令行中输入下列指令，以开启mysql服务。\n\n123systemctl start mysqld   systemctl enable mysqldsystemctl status mysqld\n\n\nmysql刚安装好的时候，其密码是临时生成的，需要重新配置mysql的密码。\n\n通过下行指令可以得到临时生成的mysql密码，将其复制，记为temp password。\n1grep &#x27;password&#x27; /var/log/mysqld.log|tail -n 1\n\n然后使用下行指令修改mysql密码为自己的：\n1mysqladmin -uroot -p&quot;temp password&quot; password &quot;yours password&quot;\n\n使用自己的mysql登录密码登陆mysql：\n1mysql -uroot -p&quot;yours password&quot;\n\n如果进入则说明登录成功：\n\n\n\n为了与hive联调，需要在mysql中创建一个叫做hive_db的表，用于存放Hive元数据信息，并且创建hive用户，为其赋予全局外部访问权限，下面是mysql的执行sql语句：\n\n1234create databse hive_db;create user hive IDENTIFIED by &#x27;hive&#x27;;grant all privileges on hive_db.* to hive@&#x27;%&#x27; with grant option;flush privileges;\n\n安装hive-2.3.7Hive不需要安装集群模式，只需要在其中一个节点安装即可，这里选择hadoop01作为hive的安装节点。\n\n从apache官网上下载hive-2.3.7的安装包：https://mirrors.bfsu.edu.cn/apache/hive/hive-2.3.7/，在提供的安装文件夹中已经包含该安装包：apache-hive-2.3.7-bin.tar.gz。\n解压hive安装包到/opt/modules/：tar -xzvf apache-hive-2.3.7-bin.tar.gz -C /opt/modules/\n配置环境变量，在/etc/profile中添加以下内容：\n\n12export HIVE_HOME=/opt/modules/apache-hive-2.3.7-binexport PATH=$PATH:$HIVE_HOME/bin\n\n然后执行：source /etc/profile使得配置生效。\n\n在命令行输入：hive –version，如果能输出hive的版本信息，则说明安装成功。\n\n\n\n\n创建hive数据仓库目录\n\n1234hadoop fs -mkdir\t /tmphadoop fs -mkdir -p  /user/hive/warehousehadoop fs -chmod g+w /tmphadoop fs -chmod g+w /user/hive/warehouse\n\n/tmp：hive任务在HDFS中的缓存目录。\n/user/hive/warehouse：hive数据仓库目录，用于存储hive创建的数据库。\n这两个路径可以在配置文件中更改。\n\n上传java连接mysql的驱动包mysql-connector-java-8.0.22.jar到$HIVE_HOME/lib中。\n修改hive的配置文件\n\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--   Licensed to the Apache Software Foundation (ASF) under one or more   contributor license agreements.  See the NOTICE file distributed with   this work for additional information regarding copyright ownership.   The ASF licenses this file to You under the Apache License, Version 2.0   (the &quot;License&quot;); you may not use this file except in compliance with   the License.  You may obtain a copy of the License at       http://www.apache.org/licenses/LICENSE-2.0   Unless required by applicable law or agreed to in writing, software   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   See the License for the specific language governing permissions and   limitations under the License.--&gt;&lt;configuration&gt;  &lt;!-- WARNING!!! This file is auto generated for documentation purposes ONLY! --&gt;  &lt;!-- WARNING!!! Any changes you make to this file will be ignored by Hive.   --&gt;  &lt;!-- WARNING!!! You must make your changes in hive-site.xml instead.         --&gt;  &lt;!-- Hive Execution Parameters --&gt;  &lt;!-- mysql数据库连接信息 --&gt;  &lt;!-- 采取本地模式存储hive元数据库 --&gt;  &lt;property&gt;      &lt;name&gt;hive.metastore.local&lt;/name&gt;      &lt;value&gt;true&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql连接地址, 此处连接本地mysql数据库, 可以更改为连接远程mysql数据库 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;      &lt;value&gt;jdbc:mysql://localhost:3306/hive_db?createDatabaseIfNotExist=true&lt;/value&gt;    &lt;/property&gt;  &lt;!-- 连接mysql的驱动类 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;      &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql用户名 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;      &lt;value&gt;hive&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql登录密码 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;      &lt;value&gt;P@ssw0rd&lt;/value&gt;    &lt;/property&gt;     &lt;!-- hive数据库在hdfs中的存放位置 --&gt;  &lt;property&gt;      &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;    &lt;value&gt;/user/hive/warehouse&lt;/value&gt;    &lt;description&gt;location of default database for the warehouse&lt;/description&gt;  &lt;/property&gt;    &lt;!-- hive本地缓存目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.exec.local.scratchdir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Local scratch space for Hive jobs&lt;/description&gt;  &lt;/property&gt;  &lt;!-- hive在hdfs中的缓存目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.exec.scratchdir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;HDFS root scratch dir for Hive jobs which gets created with write all (733) permission. For each connecting user, an HDFS scratch dir: $&#123;hive.exec.scratchdir&#125;/&amp;lt;username&amp;gt; is created, with $&#123;hive.scratch.dir.permission&#125;.&lt;/description&gt;  &lt;/property&gt;  &lt;!-- 从远程文件系统中添加资源的本地临时目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.downloaded.resources.dir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Temporary local directory for added resources in the remote file system.&lt;/description&gt;  &lt;/property&gt;  &lt;!-- hive运行时的结构化日志目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.querylog.location&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Location of Hive run time structured log file&lt;/description&gt;  &lt;/property&gt;  &lt;!-- 日志功能开启时, 存储操作日志的最高级目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.server2.logging.operation.log.location&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Top level directory where operation logs are stored if logging functionality is enabled&lt;/description&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n初始化元数据库：$HIVE_HOME/bin/schematool -dbType mysql -initSchema\n\n\n\n输出上述信息说明初始化数据成功。\n\n然后命令行输入hive，测试能否正常运行hive。\n\n\n有上述信息说明安装成功。\nhive整合hbase在hive安装目录下的conf/hive-site.xml文件中添加下列内容：\n1234567891011121314151617181920212223&lt;!-- 配置zookeeper集群访问地址 --&gt;&lt;property&gt;  &lt;name&gt;hive.zookeeper.quorum&lt;/name&gt;  &lt;value&gt;hadoop01:2181,hadoop02:2181,hadoop03:2181&lt;/value&gt;&lt;/property&gt;&lt;!-- 配置依赖的hbase、zookeeper的jar文件 --&gt;&lt;property&gt;  &lt;name&gt;hive.aux.jars.path&lt;/name&gt;  &lt;value&gt;  file:///opt/modules/hbase-2.3.2/lib/hbase-common-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-client-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-server-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-hadoop2-compat-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/netty-all-4.0.23.Final.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-protocol-2.3.2.jar,  file:///opt/modules/apache-zookeeper-3.6.2-bin/lib/zookeeper-3.6.2.jar,  &lt;/value&gt;&lt;/property&gt;&lt;property&gt;  &lt;name&gt;hive.server2.enable.doAs&lt;/name&gt;  &lt;value&gt;false&lt;/value&gt;  &lt;description&gt;Setting this property to true will have HiveServer2 execute Hive operations as the user making the calls to it.&lt;/description&gt;&lt;/property&gt;\n\n\n启动hiveserver2服务：\n\n1hive --service hiveserver2 &amp;\n\n\n\n另起一个shell，这里采用beeline的方式连接hive：\n\n12beeline!connect jdbc:hive2://hadoop01:10000\n\n如果显示下面结果就说明运行成功：\n\n\n\n到此，单机安装Hadoop-2.10.1+Hbase-2.3.2+Hive-2.3.7完毕，下面测试由hive直接创建hbase表：\n\n1CREATE TABLE hive_student(id INT, name STRING) STORED BY &#x27;org.apache.hadoop.hive.hbase.HBaseStorageHandler&#x27; WITH SERDEPROPERTIES (&quot;hbase.columns.mapping&quot; = &quot;:key,cf1:name&quot;) TBLPROPERTIES (&quot;hbase.table.name&quot; = &quot;hive_student&quot;);\n\n如果在hiveserver2那个shell框里面显示下列结果，说明创建成功：\n\n登陆hbase的web界面，可以看到创建的数据库表：\n\n集群安装预配置当前系统这部分配置以我本地三台虚拟机的配置为例\n\n关闭集群中每个机子的防火墙\n\n1234# close firewallsystemctl stop firewalld.service# disable firewall when open systemsystemctl disable firewalld.service\n\n\n在每台机子上创建软件的安装目录：mkdir /opt/modules\n修改每台机子的/etc/hostname\n\n1sudo hostname hadoop01\n\n因为有三台虚拟机，因此，hostname分别对应hadoop01、hadoop02、hadoop03\n\n修改每台机子的hosts文件\n\n1sudo vim /etc/hosts\n\n在其后面追加：\n123192.168.58.133\t\thadoop01192.168.58.134\t\thadoop02192.168.58.135\t\thadoop03\n\n上面内容对应ip和hostname，集群配置的话需要添加全部集群的ip和hostname，此外集群中所有机器需要保证处于同一网段下。\n\n生成ssh-key，实现免密登陆，集群配置的话需要在每台机子上执行下面的命令。\n\n123ssh localhostssh-keygen -t rsa -P &#x27;&#x27; -f ~/.ssh/id_rsacat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys\n\n\n需要将每台机子上生成的ssh-key发送到集群中的每个机器上：\n\n1234cd ~/.ssh/ssh-copy-id hadoop01ssh-copy-id hadoop02ssh-copy-id hadoop03\n\n安装hadoop-2.10.1\n首先从官网下载hadoop-2.10.1：https://hadoop.apache.org/releases.html，已经在安装包里面了：hadoop-2.10.1.tar.gz\n同样的，如果存在已安装的hadoop，将其卸载。\n解压hadoop-2.10.1.tar.gz：tar -xzvf hadoop-2.10.1.tar.gz -C /opt/modules/\n配置系统环境变量：\n\n12export HADOOP_HOME=/opt/modules/hadoop-2.10.1export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin\n\n\n令环境变量生效：source /etc/profile\n在命令行中输入：hadoop，如果能输出下列内容，就说明配置成功：\n\n\n\n\n配置hadoop的环境变量，需要配置hadoop-env.sh、mapred-env.sh、yarn-env.sh三个文件，在三个文件中分别加入：\n\n1export JAVA_HOME=/usr/java/jdk1.8.0_261-amd64/\n\n\n配置HDFS\n\n修改配置文件conf/core-site.xml，添加以下内容：\n12345678910111213141516171819202122232425262728&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;!-- 配置hdfs的主节点, hdfs://hostname:9000 --&gt;  &lt;property&gt;      &lt;name&gt;fs.defaultFS&lt;/name&gt;      &lt;value&gt;hdfs://hadoop01:9000&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n\n上述配置的解析如下：\nfs.defaultFS：HDFS的默认访问路径，也是NameNode的访问地址。\nhadoop.tmp.dir：Hadoop数据文件的存放目录，该参数不配置会默认指向/tmp目录，开机重启后会消失，容易导致hadoop数据丢失。\n\n修改配置文件conf/hdfs-site.xml，加入以下内容：\n\n12345678910111213141516171819202122232425262728293031323334353637383940&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;!--配置HDFS的冗余度(副本数,默认是3个)--&gt;  &lt;property&gt;    &lt;name&gt;dfs.replication&lt;/name&gt;    &lt;value&gt;3&lt;/value&gt;  &lt;/property&gt;  &lt;!-- 配置不检查权限 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.permissions&lt;/name&gt;    &lt;value&gt;false&lt;/value&gt;  &lt;/property&gt;  &lt;!-- namenode数据块的物理存储位置 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp/dfs/name&lt;/value&gt;  &lt;/property&gt;  &lt;!-- datanode数据块的物理存储位置 --&gt;  &lt;property&gt;    &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;    &lt;value&gt;file:/opt/modules/hadoop-2.10.1/tmp/dfs/data&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\ndfs.replication：文件在HDFS系统中的副本数。\ndfs.permissions：是否对用户权限进行检查。\ndfs.namenode.name.dir：NameNode节点数据在本地文件系统的存放位置。\ndfs.datanode.data.dir：DataNode节点数据在本地文件系统的存放位置。\n\n修改slaves文件，配置DataNode节点，需要将所有的节点都加进去。\n\n123hadoop01hadoop02hadoop03\n\n\n配置mapred-site.xml文件，添加以下内容：\n\n12345678910111213141516171819202122232425262728&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;!-- Put site-specific property overrides in this file. --&gt;&lt;configuration&gt;  &lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;mapreduce.application.classpath&lt;/name&gt;    &lt;value&gt;$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*:$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n配置yarn-site.xml文件，添加以下内容：\n\n123456789101112131415161718192021222324252627282930&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!--  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);  you may not use this file except in compliance with the License.  You may obtain a copy of the License at    http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License for the specific language governing permissions and  limitations under the License. See accompanying LICENSE file.--&gt;&lt;configuration&gt;&lt;!-- Site specific YARN configuration properties --&gt;  &lt;property&gt;    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;  &lt;/property&gt;  &lt;property&gt;    &lt;name&gt;yarn.nodemanager.env-whitelist&lt;/name&gt;    &lt;value&gt;JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME&lt;/value&gt;  &lt;/property&gt;  &lt;!-- 配置resourcemanager所在节点与访问端口 hostname:8032 hostname通常为master节点--&gt;  &lt;property&gt;    &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;    &lt;value&gt;hadoop01:8032&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n然后将配置好的hadoop发送到集群中的其他节点：\n\n\n12scp -r hadoop-2.10.1/ hadoop01@hadoop02:/opt/modules/scp -r hadoop-2.10.1/ hadoop01@hadoop03:/opt/modules/\n\n\nhadoop在启动之前需要先格式化NameNode：hadoop namenode -format\n\n在HADOOP_HOME目录下，输入：sbin/start-all.sh启动。\n\n在命令行输入：jps，如果显示以下内容，说明启动成功：\n\n\n\n\n安装ZooKeeper-3.6.2\n从apache官网下载一个ZooKeeper的稳定版本https://zookeeper.apache.org/releases.html，这里下载apache-zookeeper-3.6.2-bin.tar.gz\n同样的，如果存在已经安装好的zookeeper版本，就将其删除。\n将安装包解压到对应的安装目录：\n\n1tar -zxvf apache-zookeeper-3.6.2-bin.tar.gz -C /opt/modules/\n\n\n配置ZooKeeper的环境变量\n\n12export ZOOKEEPER_HOME=/opt/modules/apache-zookeeper-3.6.2-binexport PATH=$PATH:$ZOOKEEPER_HOME/bin:$ZOOKEEPER_HOME/conf\n\n\n在ZooKeeper安装目录下的conf文件夹中创建zoo.cfg文件，并在其中添加下列内容\n\n123456789101112131415# 基本事件单元，用来指示一个心跳的时长，以毫秒为单位，默认是2000tickTime&#x3D;2000# 集群中的Follower服务器初始化连接leader服务器的最大等待心跳数# 默认为10，即经过10个心跳之后，follower仍然没有收到则意味着连接失败initLimit&#x3D;5# 集群中follower服务器与leader服务器之间发送消息和请求&#x2F;应答所能等待的最多心跳数syncLimit&#x3D;2# ZooKeeper数据文件的存储位置dataDir&#x3D;&#x2F;opt&#x2F;modules&#x2F;apache-zookeeper-3.6.2-bin&#x2F;data# ZooKeeper供客户端连接的端口，默认是2181clientPort&#x3D;2181# 标识不同的zookeeper服务器，host&#x2F;ip:leader port:选举portserver.1&#x3D;hadoop01:2888:3888server.2&#x3D;hadoop02:2888:3888server.3&#x3D;hadoop03:2888:3888\n\n\n配置好后，将zookeeper复制到其他节点上：\n\n12scp -r apache-zookeeper-3.6.2-bin/ hadoop01@hadoop02:/opt/modules/scp -r apache-zookeeper-3.6.2-bin/ hadoop01@hadoop03:/opt/modules/\n\n\n分别进入每台机子上的ZooKeeper的安装目录，然后再命令行输入：bin/zkServer.sh start\n在命令行输入jps，会显示quorumpeermain。\n\n安装Hbase-2.3.2\n从apache官网上下载hbase-2.3.2的安装包http://hbase.apache.org/downloads.html，在提供的安装文件夹里已经有了：hbase-2.3.2-bin.tar.gz。\n将其解压到对应的安装目录：tar -xzvf hbase-2.3.2-bin.tar.gz -C /opt/modules/\n修改Hbase安装目录下的conf/hbase-site.xml文件，来指定Hbase和ZooKeeper的本地数据存储目录，默认是/tmp。\n\n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--/* * Licensed to the Apache Software Foundation (ASF) under one * or more contributor license agreements.  See the NOTICE file * distributed with this work for additional information * regarding copyright ownership.  The ASF licenses this file * to you under the Apache License, Version 2.0 (the * &quot;License&quot;); you may not use this file except in compliance * with the License.  You may obtain a copy of the License at * *     http://www.apache.org/licenses/LICEANSE-2.0 * * Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an &quot;AS IS&quot; BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and * limitations under the License. */--&gt;&lt;configuration&gt;  &lt;!--    The following properties are set for running HBase as a single process on a    developer workstation. With this configuration, HBase is running in    &quot;stand-alone&quot; mode and without a distributed file system. In this mode, and    without further configuration, HBase and ZooKeeper data are stored on the    local filesystem, in a path under the value configured for `hbase.tmp.dir`.    This value is overridden from its default value of `/tmp` because many    systems clean `/tmp` on a regular basis. Instead, it points to a path within    this HBase installation directory.    Running against the `LocalFileSystem`, as opposed to a distributed    filesystem, runs the risk of data integrity issues and data loss. Normally    HBase will refuse to run in such an environment. Setting    `hbase.unsafe.stream.capability.enforce` to `false` overrides this behavior,    permitting operation. This configuration is for the developer workstation    only and __should not be used in production!__    See also https://hbase.apache.org/book.html#standalone_dist  --&gt;  &lt;!-- 开启分布式模式  --&gt;  &lt;property&gt;    &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;    &lt;value&gt;true&lt;/value&gt;  &lt;/property&gt;  &lt;!-- 存储目录 需要与HDFS NameNode端口一致--&gt;  &lt;property&gt;    &lt;name&gt;hbase.rootdir&lt;/name&gt;    &lt;value&gt;hdfs://hadoop01:9000/hbase&lt;/value&gt;    &lt;description&gt;The directory shared byregion servers.&lt;/description&gt;  &lt;/property&gt;  &lt;!-- 配置zookeeper监听端口 --&gt;  &lt;property&gt;    &lt;name&gt;hbase.zookeeper.property.clientPort&lt;/name&gt;    &lt;value&gt;2181&lt;/value&gt;  &lt;/property&gt;  &lt;!--  zookeeper节点列表 --&gt;  &lt;property&gt;    &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;    &lt;value&gt;hadoop01,hadoop02,hadoop03&lt;/value&gt;  &lt;/property&gt;  &lt;!--  zookeeper数据存放目录 --&gt;  &lt;property&gt;    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;    &lt;value&gt;/opt/modules/hbase-2.3.2/zkData&lt;/value&gt;  &lt;/property&gt;  &lt;!-- hbabse临时文件存放目录 --&gt;  &lt;property&gt;      &lt;name&gt;hbase.tmp.dir&lt;/name&gt;      &lt;value&gt;/opt/modules/hbase-2.3.2/tmp&lt;/value&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n修改hbase安装目录下的conf/regionservers文件，去掉默认的localhost，添加集群中每个机子的hostname:\n\n123hadoop01hadoop02hadoop03\n\n\n将配置好的hbase复制到集群中的每个节点：\n\n12scp -r hbase-2.3.2/ hadoop01@hadoop02:/opt/modules/scp -r hbase-2.3.2/ hadoop01@hadoop03:/opt/modules/\n\n\n在hadoop01下启动Hbase服务，在Hbase安装目录下，运行以下指令：bin/start-hbase.sh\n启动以后，在命令行输入：jps，会显示hmaster、hregionserver。\n\n安装mysqlHive的运行有内嵌、本地和远程模式，因为当前业务场景的问题，只需要本地模式即可，而本地模式需要依赖mysql。\n\n移除现有的mysql相关安装包：yum -y remove mysql*\n下载mysql安装的yum release：wget http://repo.mysql.com/mysql-community-release-el7.rpm\n使用rpm安装该依赖：rpm -ivh mysql-community-release-el7.rpm\n使用yum安装mysql最新版本：yum -y install mysql-server\n然后在命令行中输入下列指令，以开启mysql服务。\n\n123systemctl start mysqld   systemctl enable mysqldsystemctl status mysqld\n\n\nmysql刚安装好的时候，其密码是临时生成的，需要重新配置mysql的密码。\n\n通过下行指令可以得到临时生成的mysql密码，将其复制，记为temp password。\n1grep &#x27;password&#x27; /var/log/mysqld.log|tail -n 1\n\n然后使用下行指令修改mysql密码为自己的：\n1mysqladmin -uroot -p&quot;temp password&quot; password &quot;yours password&quot;\n\n使用自己的mysql登录密码登陆mysql：\n1mysql -uroot -p&quot;yours password&quot;\n\n如果进入则说明登录成功：\n\n\n\n为了与hive联调，需要在mysql中创建一个叫做hive_db的表，用于存放Hive元数据信息，并且创建hive用户，为其赋予全局外部访问权限，下面是mysql的执行sql语句：\n\n1234create databse hive_db;create user hive IDENTIFIED by &#x27;hive&#x27;;grant all privileges on hive_db.* to hive@&#x27;%&#x27; with grant option;flush privileges;\n\n安装hive-2.3.7Hive不需要安装集群模式，只需要在其中一个节点安装即可，这里选择hadoop01作为hive的安装节点。\n\n从apache官网上下载hive-2.3.7的安装包：https://mirrors.bfsu.edu.cn/apache/hive/hive-2.3.7/，在提供的安装文件夹中已经包含该安装包：apache-hive-2.3.7-bin.tar.gz。\n解压hive安装包到/opt/modules/：tar -xzvf apache-hive-2.3.7-bin.tar.gz -C /opt/modules/\n配置环境变量，在/etc/profile中添加以下内容：\n\n12export HIVE_HOME=/opt/modules/apache-hive-2.3.7-binexport PATH=$PATH:$HIVE_HOME/bin\n\n然后执行：source /etc/profile使得配置生效。\n\n在命令行输入：hive –version，如果能输出hive的版本信息，则说明安装成功。\n\n\n\n\n创建hive数据仓库目录\n\n1234hadoop fs -mkdir\t /tmphadoop fs -mkdir -p  /user/hive/warehousehadoop fs -chmod g+w /tmphadoop fs -chmod g+w /user/hive/warehouse\n\n/tmp：hive任务在HDFS中的缓存目录。\n/user/hive/warehouse：hive数据仓库目录，用于存储hive创建的数据库。\n这两个路径可以在配置文件中更改。\n\n上传java连接mysql的驱动包mysql-connector-java-8.0.22.jar到$HIVE_HOME/lib中。\n修改hive的配置文件\n\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586&lt;?xml version=&quot;1.0&quot;?&gt;&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;&lt;!--   Licensed to the Apache Software Foundation (ASF) under one or more   contributor license agreements.  See the NOTICE file distributed with   this work for additional information regarding copyright ownership.   The ASF licenses this file to You under the Apache License, Version 2.0   (the &quot;License&quot;); you may not use this file except in compliance with   the License.  You may obtain a copy of the License at       http://www.apache.org/licenses/LICENSE-2.0   Unless required by applicable law or agreed to in writing, software   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   See the License for the specific language governing permissions and   limitations under the License.--&gt;&lt;configuration&gt;  &lt;!-- WARNING!!! This file is auto generated for documentation purposes ONLY! --&gt;  &lt;!-- WARNING!!! Any changes you make to this file will be ignored by Hive.   --&gt;  &lt;!-- WARNING!!! You must make your changes in hive-site.xml instead.         --&gt;  &lt;!-- Hive Execution Parameters --&gt;  &lt;!-- mysql数据库连接信息 --&gt;  &lt;!-- 采取本地模式存储hive元数据库 --&gt;  &lt;property&gt;      &lt;name&gt;hive.metastore.local&lt;/name&gt;      &lt;value&gt;true&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql连接地址, 此处连接本地mysql数据库, 可以更改为连接远程mysql数据库 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;      &lt;value&gt;jdbc:mysql://localhost:3306/hive_db?createDatabaseIfNotExist=true&lt;/value&gt;    &lt;/property&gt;  &lt;!-- 连接mysql的驱动类 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;      &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql用户名 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;      &lt;value&gt;hive&lt;/value&gt;    &lt;/property&gt;  &lt;!-- mysql登录密码 --&gt;  &lt;property&gt;      &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;      &lt;value&gt;P@ssw0rd&lt;/value&gt;    &lt;/property&gt;     &lt;!-- hive数据库在hdfs中的存放位置 --&gt;  &lt;property&gt;      &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;    &lt;value&gt;/user/hive/warehouse&lt;/value&gt;    &lt;description&gt;location of default database for the warehouse&lt;/description&gt;  &lt;/property&gt;    &lt;!-- hive本地缓存目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.exec.local.scratchdir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Local scratch space for Hive jobs&lt;/description&gt;  &lt;/property&gt;  &lt;!-- hive在hdfs中的缓存目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.exec.scratchdir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;HDFS root scratch dir for Hive jobs which gets created with write all (733) permission. For each connecting user, an HDFS scratch dir: $&#123;hive.exec.scratchdir&#125;/&amp;lt;username&amp;gt; is created, with $&#123;hive.scratch.dir.permission&#125;.&lt;/description&gt;  &lt;/property&gt;  &lt;!-- 从远程文件系统中添加资源的本地临时目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.downloaded.resources.dir&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Temporary local directory for added resources in the remote file system.&lt;/description&gt;  &lt;/property&gt;  &lt;!-- hive运行时的结构化日志目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.querylog.location&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Location of Hive run time structured log file&lt;/description&gt;  &lt;/property&gt;  &lt;!-- 日志功能开启时, 存储操作日志的最高级目录 --&gt;  &lt;property&gt;    &lt;name&gt;hive.server2.logging.operation.log.location&lt;/name&gt;    &lt;value&gt;/tmp/hive&lt;/value&gt;    &lt;description&gt;Top level directory where operation logs are stored if logging functionality is enabled&lt;/description&gt;  &lt;/property&gt;&lt;/configuration&gt;\n\n\n初始化元数据库：$HIVE_HOME/bin/schematool -dbType mysql -initSchema\n\n\n\n输出上述信息说明初始化数据成功。\n\n然后命令行输入hive，测试能否正常运行hive。\n\n\n有上述信息说明安装成功。\nhive整合hbase在hive安装目录下的conf/hive-site.xml文件中添加下列内容：\n1234567891011121314151617181920212223&lt;!-- 配置zookeeper集群访问地址 --&gt;&lt;property&gt;  &lt;name&gt;hive.zookeeper.quorum&lt;/name&gt;  &lt;value&gt;hadoop01:2181,hadoop02:2181,hadoop03:2181&lt;/value&gt;&lt;/property&gt;&lt;!-- 配置依赖的hbase、zookeeper的jar文件 --&gt;&lt;property&gt;  &lt;name&gt;hive.aux.jars.path&lt;/name&gt;  &lt;value&gt;  file:///opt/modules/hbase-2.3.2/lib/hbase-common-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-client-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-server-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-hadoop2-compat-2.3.2.jar,  file:///opt/modules/hbase-2.3.2/lib/netty-all-4.0.23.Final.jar,  file:///opt/modules/hbase-2.3.2/lib/hbase-protocol-2.3.2.jar,  file:///opt/modules/apache-zookeeper-3.6.2-bin/lib/zookeeper-3.6.2.jar,  &lt;/value&gt;&lt;/property&gt;&lt;property&gt;  &lt;name&gt;hive.server2.enable.doAs&lt;/name&gt;  &lt;value&gt;false&lt;/value&gt;  &lt;description&gt;Setting this property to true will have HiveServer2 execute Hive operations as the user making the calls to it.&lt;/description&gt;&lt;/property&gt;\n\n\n启动hiveserver2服务：\n\n1hive --service hiveserver2 &amp;\n\n\n\n另起一个shell，这里采用beeline的方式连接hive：\n\n12beeline!connect jdbc:hive2://hadoop01:10000\n\n如果显示下面结果就说明运行成功：\n\n\n\n到此，单机安装Hadoop-2.10.1+Hbase-2.3.2+Hive-2.3.7完毕，下面测试由hive直接创建hbase表：\n\n1CREATE TABLE hive_student(id INT, name STRING) STORED BY &#x27;org.apache.hadoop.hive.hbase.HBaseStorageHandler&#x27; WITH SERDEPROPERTIES (&quot;hbase.columns.mapping&quot; = &quot;:key,cf1:name&quot;) TBLPROPERTIES (&quot;hbase.table.name&quot; = &quot;hive_student&quot;);\n\n如果在hiveserver2那个shell框里面显示下列结果，说明创建成功：\n\n登陆hbase的web界面，可以看到创建的数据库表：\n\n","dateCreated":"2020-11-28T14:59:55+08:00","dateModified":"2020-11-28T22:56:59+08:00","datePublished":"2020-11-28T14:59:55+08:00","description":"","headline":"Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"},"publisher":{"@type":"Organization","name":"Shougong","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/","keywords":"hadoop"}</script>
+    <meta name="description" content="记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。 预安装jdk1.8.0 从https:&#x2F;&#x2F;www.oracle.com&#x2F;java&#x2F;technologies&#x2F;javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。 如果本机上有别的java版本，">
+<meta property="og:type" content="blog">
 <meta property="og:title" content="Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装">
 <meta property="og:url" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="Shougong&#39;s Blog">
@@ -123,216 +62,330 @@
 <meta property="article:tag" content="hadoop">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201103195618114.png">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '',
-    scheme: 'Muse',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7安装/"/>
-
-
-
-
-
-  <title>Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装 | Shougong's Blog</title>
-  
-
-
-
-
-
-
-
-
-<meta name="generator" content="Hexo 5.2.0"></head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-  
     
-  
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
 
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
     
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Shougong's Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            Shougong&#39;s Blog
+        </a>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
+    
         
-        <li class="menu-item menu-item-home">
-          <a href="/%20" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
         
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/%20" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
+        
+        </a>
+    
+</header>
 
-      
-    </ul>
-  
+            <!-- Define author's picture -->
 
-  
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="#about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="http://stackoverflow.com/users"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Stack Overflow"
+                        >
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://twitter.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Twitter"
+                        >
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://facebook.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Facebook"
+                        >
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://plus.google.com/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="Google +"
+                        >
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google +</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://www.linkedin.com/profile/"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="LinkedIn"
+                        >
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/mailto"
+                            
+                            rel="noopener"
+                            title="Mail"
+                        >
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
 </nav>
 
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
     
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shougong's Blog">
-    </span>
-
     
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装</h1>
-        
-
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装
+        </h1>
+    
+    
         <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-11-28T14:59:55+08:00">
-                2020-11-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
+    <time datetime="2020-11-28T14:59:55+08:00">
+	
+		    Nov 28, 2020
+    	
+    </time>
     
+</div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</div>
 
-      
-      
-
-      
-        <p>记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。</p>
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。</p>
 <h3 id="预安装jdk1-8-0"><a href="#预安装jdk1-8-0" class="headerlink" title="预安装jdk1.8.0"></a>预安装jdk1.8.0</h3><ul>
 <li>从<a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase-downloads.html%E4%B8%8B%E8%BD%BDjdk-8u261-linux-x64.rpm%EF%BC%8C%E8%AF%A5%E5%AE%89%E8%A3%85%E5%8C%85%E5%B7%B2%E7%BB%8F%E4%B8%8B%E8%BD%BD%E5%A5%BD%E4%BA%86%EF%BC%8C%E5%B9%B6%E5%AD%98%E4%BA%8E%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E4%B8%8B%E3%80%82">https://www.oracle.com/java/technologies/javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。</a></li>
 <li>如果本机上有别的java版本，可以采用两种方式，删除原先版本或者不安装该版本。</li>
@@ -1050,370 +1103,327 @@
 <p>登陆hbase的web界面，可以看到创建的数据库表：</p>
 <p><img src="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201105103935523.png" alt="image-20201105103935523"></p>
 
-      
+            
+
+
+        </div>
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/hadoop/" rel="tag"># hadoop</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2020/11/28/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
-  
-
-
-
-        </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/hadoop/" rel="tag">hadoop</a>
 
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/11/28/hello-world/"
+                    data-tooltip="Hello World"
+                    aria-label="NEXT: Hello World"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
         </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name"></p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/%20%7C%7C%20archive">
-              
-                  <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">posts</span>
-                </a>
-              </div>
-            
-
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">1</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%AE%89%E8%A3%85jdk1-8-0"><span class="nav-number">1.</span> <span class="nav-text">预安装jdk1.8.0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">单机安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%84%E9%85%8D%E7%BD%AE%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.0.1.</span> <span class="nav-text">预配置当前系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85hadoop-2-10-1"><span class="nav-number">2.0.2.</span> <span class="nav-text">安装hadoop-2.10.1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85ZooKeeper-3-6-2"><span class="nav-number">2.0.3.</span> <span class="nav-text">安装ZooKeeper-3.6.2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Hbase-2-3-2"><span class="nav-number">2.0.4.</span> <span class="nav-text">安装Hbase-2.3.2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql"><span class="nav-number">2.0.5.</span> <span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85hive-2-3-7"><span class="nav-number">2.0.6.</span> <span class="nav-text">安装hive-2.3.7</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hive%E6%95%B4%E5%90%88hbase"><span class="nav-number">2.0.7.</span> <span class="nav-text">hive整合hbase</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">伪分布式安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%84%E9%85%8D%E7%BD%AE%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F-1"><span class="nav-number">3.0.1.</span> <span class="nav-text">预配置当前系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85hadoop-2-10-1-1"><span class="nav-number">3.0.2.</span> <span class="nav-text">安装hadoop-2.10.1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85ZooKeeper-3-6-2-1"><span class="nav-number">3.0.3.</span> <span class="nav-text">安装ZooKeeper-3.6.2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Hbase-2-3-2-1"><span class="nav-number">3.0.4.</span> <span class="nav-text">安装Hbase-2.3.2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql-1"><span class="nav-number">3.0.5.</span> <span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85hive-2-3-7-1"><span class="nav-number">3.0.6.</span> <span class="nav-text">安装hive-2.3.7</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hive%E6%95%B4%E5%90%88hbase-1"><span class="nav-number">3.0.7.</span> <span class="nav-text">hive整合hbase</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85"><span class="nav-number">4.</span> <span class="nav-text">集群安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A2%84%E9%85%8D%E7%BD%AE%E5%BD%93%E5%89%8D%E7%B3%BB%E7%BB%9F-2"><span class="nav-number">4.0.1.</span> <span class="nav-text">预配置当前系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85hadoop-2-10-1-2"><span class="nav-number">4.0.2.</span> <span class="nav-text">安装hadoop-2.10.1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85ZooKeeper-3-6-2-2"><span class="nav-number">4.0.3.</span> <span class="nav-text">安装ZooKeeper-3.6.2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Hbase-2-3-2-2"><span class="nav-number">4.0.4.</span> <span class="nav-text">安装Hbase-2.3.2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql-2"><span class="nav-number">4.0.5.</span> <span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85hive-2-3-7-2"><span class="nav-number">4.0.6.</span> <span class="nav-text">安装hive-2.3.7</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hive%E6%95%B4%E5%90%88hbase-2"><span class="nav-number">4.0.7.</span> <span class="nav-text">hive整合hbase</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
         
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Shougong</span>
-
-  
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+        
+        
+            
+        
+    </div>
+</article>
 
 
 
-  <span class="post-meta-divider">|</span>
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 Shougong. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/11/28/hello-world/"
+                    data-tooltip="Hello World"
+                    aria-label="NEXT: Hello World"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
 
 
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
 
-
-
-
+            
+        </div>
         
 
 
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Shougong</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
 
-
-
-
+            </div>
+        
+        
+    </div>
+</div>
 
         
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
         
-      </div>
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
     
 
-    
 
-  </div>
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-</body>
+    </body>
 </html>
