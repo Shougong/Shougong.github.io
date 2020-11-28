@@ -87,9 +87,9 @@
 <meta property="og:description" content="记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。 预安装jdk1.8.0 从https:&#x2F;&#x2F;www.oracle.com&#x2F;java&#x2F;technologies&#x2F;javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。 如果本机上有别的java版本，">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201103195618114.png">
-<meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/Users/asus/AppData/Roaming/Typora/typora-user-images/image-20201103200522625.png">
-<meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/Users/asus/AppData/Roaming/Typora/typora-user-images/image-20201103202921603.png">
-<meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/Users/asus/AppData/Roaming/Typora/typora-user-images/image-20201104110833100.png">
+<meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201103200522625.png">
+<meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201103202921603.png">
+<meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201104110833100.png">
 <meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/Users/asus/AppData/Roaming/Typora/typora-user-images/image-20201104143049745.png">
 <meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/Users/asus/AppData/Roaming/Typora/typora-user-images/image-20201104145800066.png">
 <meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201104152203181.png">
@@ -118,7 +118,7 @@
 <meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201105103851443.png">
 <meta property="og:image" content="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201105103935523.png">
 <meta property="article:published_time" content="2020-11-28T06:59:55.000Z">
-<meta property="article:modified_time" content="2020-11-28T07:58:42.878Z">
+<meta property="article:modified_time" content="2020-11-28T14:45:15.180Z">
 <meta property="article:author" content="Shougong">
 <meta property="article:tag" content="hadoop">
 <meta name="twitter:card" content="summary">
@@ -388,8 +388,7 @@
 <li>令环境变量生效：source /etc/profile</li>
 <li>在命令行中输入：hadoop，如果能输出下列内容，就说明配置成功：</li>
 </ul>
-<img src="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/Users\asus\AppData\Roaming\Typora\typora-user-images\image-20201103200522625.png" alt="image-20201103200522625" style="zoom: 80%;">
-
+<p><img src="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201103200522625.png" alt="image-20201103200522625.png"></p>
 <ul>
 <li>配置hadoop的环境变量，需要配置hadoop-env.sh、mapred-env.sh、yarn-env.sh三个文件，在三个文件中分别加入：</li>
 </ul>
@@ -437,8 +436,7 @@
 <li><p>在命令行输入：jps，如果显示以下内容，说明启动成功：</p>
 </li>
 </ul>
-<img src="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/Users\asus\AppData\Roaming\Typora\typora-user-images\image-20201103202921603.png" alt="image-20201103202921603" style="zoom:80%;">
-
+<p><img src="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201103202921603.png" alt="image-20201103202921603.png"></p>
 <h5 id="安装ZooKeeper-3-6-2"><a href="#安装ZooKeeper-3-6-2" class="headerlink" title="安装ZooKeeper-3.6.2"></a>安装ZooKeeper-3.6.2</h5><ul>
 <li>从apache官网下载一个ZooKeeper的稳定版本<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/releases.html%EF%BC%8C%E8%BF%99%E9%87%8C%E4%B8%8B%E8%BD%BDapache-zookeeper-3.6.2-bin.tar.gz">https://zookeeper.apache.org/releases.html，这里下载apache-zookeeper-3.6.2-bin.tar.gz</a></li>
 <li>同样的，如果存在已经安装好的zookeeper版本，就将其删除。</li>
@@ -501,7 +499,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p&quot;yours password&quot;</span><br></pre></td></tr></table></figure>
 
 <p>如果进入则说明登录成功：</p>
-<img src="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/Users\asus\AppData\Roaming\Typora\typora-user-images\image-20201104110833100.png" alt="image-20201104110833100" style="zoom:80%;">
+<img src="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201104110833100.png" alt="image-20201104110833100" style="zoom:80%;">
 
 <ul>
 <li>为了与hive联调，需要在mysql中创建一个叫做hive_db的表，用于存放Hive元数据信息，并且创建hive用户，为其赋予全局外部访问权限，下面是mysql的执行sql语句：</li>
