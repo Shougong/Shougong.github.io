@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    Hello World |  Shougong&#39;s Blog
+    Text Classification Using Label Names Only, A Language Model Self-Training Approach |  Shougong&#39;s Blog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -45,7 +45,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-hello-world"
+  id="post-Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -56,22 +56,26 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Hello World
+  Text Classification Using Label Names Only, A Language Model Self-Training Approach
 </h1>
  
 
     </header>
      
     <div class="article-meta">
-      <a href="/2020/11/28/hello-world/" class="article-date">
-  <time datetime="2020-11-28T03:00:42.467Z" itemprop="datePublished">2020-11-28</time>
-</a>   
+      <a href="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/" class="article-date">
+  <time datetime="2020-11-29T15:25:26.000Z" itemprop="datePublished">2020-11-29</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/paper-notes/">paper notes</a>
+  </div>
+  
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">75</span>
+            <span class="post-count">3k</span>
         </span>
     </span>
 
@@ -80,7 +84,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">10 min</span>
         </span>
     </span>
 </div>
@@ -95,19 +99,87 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+  <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>现阶段文本分类方法需要基于大量的人为标注数据进行训练，这种方法缺乏实际应用性不说，而人类只需要基于描述待分类类别的少数单词就可以准确分类，因为人类对这些标签具有先验知识，能理解这些标签。</p>
+<p>当前文本分类方向较为前沿的是<strong>半监督文本分类方法</strong>和<strong>零次学习方法</strong>。半监督学习方法主要分为两种途径：<strong>基于增强学习的方法</strong>和<strong>基于图的方法</strong>。</p>
+<p><strong>增强学习方法</strong>通常是通过产生新的例子，并对模型的预测进行正则化以范化模型性能，增强实例的方法一般采用通过反向翻译创建为真实文本序列、通过扰动或插值在模型的隐藏状态下创建。</p>
+<p><strong>基于图的方法</strong>对单词、文档、标签建立文本网络，然后采用嵌入学习或图神经网络传递标签信息。</p>
+<p><strong>零次学习方法</strong>通过在已知标签集上训练，并推广到未知标签集而不使用任何新的标签文档。但是这依旧需要对数据进行标注，尤其是在大规模的数据集下，仍需要标注大量的数据。</p>
+<p>基于上述内容，文章研究了弱监督文本分类问题，以探索不使用标签进行分类的可能性（<strong>动机</strong>），弱监督学习方法仅基于每个类别的单词级描述对文本文档进行分类，从而避免对标签的需求。</p>
+<p>在上述基础上，文章提出了LOTClass自训练语言模型，该模型仅使用每个类的标签名称在未标注数据上训练，模型主要分成以下三个步骤：</p>
+<ul>
+<li>使用预训练语言模型为每个类别提供一个词汇表，该表包含与标签名称语义上相关的单词。</li>
+<li>语言模型会从从未标记语料库中选择高质量的类别指向性单词来训练，能从上下文单词级别的类别预测任务重捕获类别区分信息。</li>
+<li>在大量未标记的数据集中，通过文档级的自训练泛化语言模型。</li>
+</ul>
+<h3 id="文章的主要贡献"><a href="#文章的主要贡献" class="headerlink" title="文章的主要贡献"></a>文章的主要贡献</h3><ul>
+<li>提出了一种基于预训练的神经语言模型的弱监督文本分类模型LOTClass，该模型不需要任何带标签的文档，而只需每个类的标签名称。</li>
+<li>提出了一种用于查找类别指示性单词的方法和一个上下文化的单词级类别预测任务，该任务可以训练LM使用上下文来预测单词的隐含类别。 经过如此训练的LM在对未标记的语料库进行自我训练后，可以很好地概括文档级别的分类。</li>
+</ul>
+<h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><h4 id="类别词汇表构建"><a href="#类别词汇表构建" class="headerlink" title="类别词汇表构建"></a>类别词汇表构建</h4><p>类别词汇表的构建，其核心在于如何找到大多数情况下可相互替换的单词？通常来说，这样的单词其语义是相似的。文章的做法是，使用预训练BERT的掩码语言模型来预测在大多数上下文中，什么样的单词能替代标签名称，具体的做法：</p>
+<p>对于每个出现在语料库中的标签名称$x$，由BERT的encoder产生其上下文embedding向量$h\in \mathbb{R}^{h}$，然后将其送入MLM head，这会输出整个词汇表$V$层面的概率分布，这能指示每个单词出现在这个位置的可能性：<br>$$<br>p(w \mid \boldsymbol{h})=\operatorname{Softmax}\left(W_{2} \sigma\left(W_{1} \boldsymbol{h}+\boldsymbol{b}\right)\right)<br>$$<br>其中，$\sigma(\cdot)$是激活函数，$W_{1} \in \mathbb{R}^{h \times h}$，$b \in \mathbb{R}^{h}$，$W_{2} \in \mathbb{R}^{|V| \times h}$是已经由BERT的MLM对象预训练后的可学习参数。</p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201027143533074.png" alt="image-20201027143533074"></p>
+<p>Table 1显示了预训练MLM预测的top-words（根据$p(w \mid \boldsymbol{h})$排序），在两个不同的上下文中替换单词sports。文章对top-50的预测结果进行了观察，发现这些预测单词通常与原单词有着相似含义，因此文章使用50个单词作为阈值，以此来定义出现在语料库中的标签名称的有效替换。最后，文章按照单词可以替换语料库中标签名称的次数对预测单词进行排列，取前100个单词作为每个类别的类别词汇，并使用NLTK去除停用词以及在多个类别中出现的单词。</p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201027144937729.png" alt="image-20201027144937729"></p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201027145010254.png" alt="image-20201027145010254"></p>
+<p>Table 2、3、4显示不同数据集的类别词汇表。</p>
+<h4 id="Masked-Category-Prediction"><a href="#Masked-Category-Prediction" class="headerlink" title="Masked Category Prediction"></a>Masked Category Prediction</h4><p>这部分主要是让分类模型关注于句子中的类别指向性单词，也就是前面说的第二步，捕获类别区分信息。一种比较直接的做法是直接高亮语料库中所有出现在类别词汇表中的单词，但是这存在两个问题：（1）单词的意思与上下文相关，出现在句子中的类别关键词不一定指向类别；（2）类别词汇表的的覆盖率是有限的，有些词项在特定上下文下雨类别关键词有着相似的含义，但是并不存在于类别词汇表中。</p>
+<p>所以要让模型更好地关注类别指向性单词，就得解决这两个问题，因此文章提出了Masked Category Prediction任务，如图1所示。</p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201027155224495.png" alt="image-20201027155224495"></p>
+<p>具体做法如下，在section 3.1中，文章重用了BERT中的MLM方法，通过检查什么是有效的替代词来理解每个词的语境化含义。和前文一致，将MLM给出的top-50单词作为原始单词的有效替代，此外，如果一个单词$w$在50次里面，有超过20次出现在类别$c_{w}$的类别词汇表中，就将其视为$c_{w}$的类别指向性单词。然后通过对语料库中每个单词的检测，可以得到类别指向性单词集合和其类别标签$\mathcal{S}_{ind}$作为单词级别的监督。</p>
+<p>对于每个类别指示单词$w$，文章使用$[MASK]$将其屏蔽，并且在排名靠前的$w$的上下文嵌入$h$上，通过交叉熵损失训练模型，以预测$w$的指示性类别$c_{w}$。<br>$$<br>\begin{aligned}\mathcal{L}<em>{M C P} &amp;=-\sum</em>{\left(w, c_{w}\right) \in \mathcal{S}<em>{\text {ind }}} \log p\left(c</em>{w} \mid \boldsymbol{h}<em>{w}\right) \p(c \mid \boldsymbol{h}) &amp;=\operatorname{Softmax}\left(W</em>{c} \boldsymbol{h}+\boldsymbol{b}<em>{c}\right)\end{aligned}<br>$$<br>其中，$W</em>{c} \in \mathbb{R}^{K \times h}$和$\boldsymbol{b}_{c} \in \mathbb{R}^{K}$是线性层的可学习参数（$K$是类别数目）。采用masked方式，可以使模型基于单词上下文进行推断，而不是简单的记住无上下文的类别关键词。</p>
+<h4 id="Self-Training"><a href="#Self-Training" class="headerlink" title="Self-Training"></a>Self-Training</h4><p>这部分是文章将在MCP任务上训练后的模型在大量无标签数据集上进行自训练，主要有两个出发点：（1）大量的无标签数据集可以微调模型提高其泛化性能；（2）模型只使用masked在排名靠前的单词上训练预测类别，但未在$[CLS]$上进行，该token允许模型看到整个句子来预测类别（可能是考虑信息泄露带来的影响）。</p>
+<p>自训练过程实质上是迭代地使用模型当前的预测值$P$来计算引导模型微调的目标分布$Q$。整个过程可以表示为$KL$散度：<br>$$<br>\mathcal{L}<em>{S T}=\mathrm{KL}(Q | P)=\sum</em>{i=1}^{N} \sum_{j=1}^{K} q_{i j} \log \frac{q_{i j}}{p_{i j}}<br>$$<br>其中，$N$是样本数目。</p>
+<p>目标分布$Q$有两个选择：硬标记和软标记。硬标记以阈值$\tau$将高置信度的预测转换为一个one-hot标签，即$q_{i j}=\mathbb{1}\left(p_{i j}&gt;\tau\right)$；软标记通过增强高置信度预测来推导Q，同时通过对当前预测进行平方和归一化来降级低置信度预测：<br>$$<br>q_{i j}=\frac{p_{i j}^{2} / f_{j}}{\sum_{j^{\prime}}\left(p_{i j^{\prime}}^{2} / f_{j^{\prime}}\right)}, f_{j}=\sum_{i} p_{i j}<br>$$<br>然后再把经过MCP训练的分类器应用于每个文档的$[CLS]$进行模型预测：<br>$$<br>p_{i j}=p\left(c_{j} \mid \boldsymbol{h}<em>{d</em>{i}:[\mathrm{CLS}]}\right)<br>$$<br>文章发现，软标签策略能给出更好更稳定的结果，这是因为硬标记会将高置信度的结果直接视为ground truth，这有可能会导致错误传播；此外软标签不需要预设置阈值。</p>
+<p>下面是每50个batch训练模型的算法：</p>
+<img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201027204809170.png" alt="image-20201027204809170" style="zoom:80%;">
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><h4 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h4><p>文章选用了四个数据集：AG News、DBPedia、IMDB、Amazon，以下是各个数据集的相关信息：</p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201027205039399.png" alt="image-20201027205039399"></p>
+<h4 id="实验参数设定"><a href="#实验参数设定" class="headerlink" title="实验参数设定"></a>实验参数设定</h4><table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Description</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>max_seq_length</td>
+<td>最大句子长度，分别对应四个数据集</td>
+<td>200，200，512，200</td>
+</tr>
+<tr>
+<td>batch size</td>
+<td>训练集划分的batch大小</td>
+<td>128</td>
+</tr>
+<tr>
+<td>$\alpha_{1}$</td>
+<td>MCP过程的学习率</td>
+<td>2e-5</td>
+</tr>
+<tr>
+<td>$\alpha_{2}$</td>
+<td>自训练过程的学习率</td>
+<td>1e-6</td>
+</tr>
+</tbody></table>
+<p>注：采用Adam优化算法。</p>
+<h4 id="实验结果和结果分析"><a href="#实验结果和结果分析" class="headerlink" title="实验结果和结果分析"></a>实验结果和结果分析</h4><p>文章方法和baseline方法在分类上的准确率如下Table 6所示：</p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201028105247646.png" alt="image-20201028105247646"></p>
+<p>Table 6显示，在弱监督模型中，LOTClass性能最优，且自训练能提升模型的性能，这证明了文章提出的类别理解方法和MCP任务的有效性。</p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201028112040426.png" alt="image-20201028112040426"></p>
+<p>上图（a）显示了每个类的标记文档数与测试集准确率的关系，且LOTClass在每个类有48个标记文档的情况下，与Supervised BERT性能接近。图（b）显示了LOTClass在自训练阶段的损失和准确率随batches的变化情况，从损失曲线上可以看到，模型的更新间隔大概是50左右，且随着模型迭代，性能逐渐提高。图（c）显示了LOTClass和采用简单匹配的BERT之间的性能对比，结果显示简单匹配对结果无益，这可能是因为包含标签名称的文档可能和该文档的类别无关，且简单匹配会导致的噪声可能会导致模型做出高可信的错误预测，从而导致模型难以捕获正确的分类信号。这表明通过理解上下文中单词的含义来预测单词对分类结果的必要性。</p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201028143504206.png" alt="image-20201028143504206"></p>
+<p>Table 7显示了不同单词作为标签名称的敏感性，可以看到尽管使用不同的词作为label name，但是类别词汇表中的单词其意思都很接近，这能证明模型具有的鲁棒性。</p>
+<p><img src="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/image-20201028145603674.png" alt="image-20201028145603674"></p>
+<p>Table 8显示了使用Glove 300d预训练embedding作为输入，得到的类别理解单词，可以看到结果中会存在语义截然不同的单词，这是因为Glove模型还是从局部上下文窗口中学习上下文无关的embedding，因此采用神经语言模型来捕捉目标词汇能更好的捕获长距离依赖和更精确的结果。</p>
+<h3 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h3><ul>
+<li>弱监督分类的潜在性能并没有被完全挖掘。</li>
+<li>在其他NLP任务中，弱监督也有适用性。</li>
+<li>弱监督分类的局限性：在一些语义含义更深的样本下，标签名称不足以教导模型正确的分类，因为样本的隐含表达超出了词级的理解程度，文章认为，对于这类样本允许模型向用户咨询的主动学习方式来改善弱监督学习是有效的。</li>
+<li>与半监督学习进行联合学习。</li>
+</ul>
  
       <!-- reward -->
       
@@ -178,26 +250,24 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2020/11/28/hello-world/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/text-classification/" rel="tag">text classification</a></li></ul>
+
     </footer>
   </div>
 
    
   <nav class="article-nav">
     
-      <a href="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装
-          
-        </div>
-      </a>
     
+      <a href="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装</div>
+      </a>
     
   </nav>
 
