@@ -34,7 +34,7 @@
   
 
 <link rel="alternate" href="/atom.xml" title="Shougong's Blog" type="application/atom+xml">
-</head>
+<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
 
 </html>
 
@@ -175,7 +175,8 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>现阶段文本分类方法需要基于大量的人为标注数据进行训练，这种方法缺乏实际应用性不说，而人类只需要基于描述待分类类别的少数单词就可以准确分类，因为人类对这些标签具有先验知识，能理解这些标签。</p>
+  <h3 id="概述">概述</h3>
+<p>现阶段文本分类方法需要基于大量的人为标注数据进行训练，这种方法缺乏实际应用性不说，而人类只需要基于描述待分类类别的少数单词就可以准确分类，因为人类对这些标签具有先验知识，能理解这些标签。</p>
 <p>当前文本分类方向较为前沿的是<strong>半监督文本分类方法</strong>和<strong>零次学习方法</strong>。半监督学习方法主要分为两种途径：<strong>基于增强学习的方法</strong>和<strong>基于图的方法</strong>。</p>
 <p><strong>增强学习方法</strong>通常是通过产生新的例子，并对模型的预测进行正则化以范化模型性能，增强实例的方法一般采用通过反向翻译创建为真实文本序列、通过扰动或插值在模型的隐藏状态下创建。</p> 
       <a class="article-more-link" href="/2020/11/29/Text-Classification-Using-Label-Names-Only-A-Language-Model-Self-Training-Approach/"
@@ -230,8 +231,9 @@
     <div class="article-entry" itemprop="articleBody">
        
   <p>记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。</p>
-<h3 id="预安装jdk1-8-0"><a href="#预安装jdk1-8-0" class="headerlink" title="预安装jdk1.8.0"></a>预安装jdk1.8.0</h3><ul>
-<li>从<a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase-downloads.html%E4%B8%8B%E8%BD%BDjdk-8u261-linux-x64.rpm%EF%BC%8C%E8%AF%A5%E5%AE%89%E8%A3%85%E5%8C%85%E5%B7%B2%E7%BB%8F%E4%B8%8B%E8%BD%BD%E5%A5%BD%E4%BA%86%EF%BC%8C%E5%B9%B6%E5%AD%98%E4%BA%8E%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E4%B8%8B%E3%80%82">https://www.oracle.com/java/technologies/javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。</a></li>
+<h3 id="预安装jdk1-8-0">预安装jdk1.8.0</h3>
+<ul>
+<li>从https://www.oracle.com/java/technologies/javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。</li>
 <li>如果本机上有别的java版本，可以采用两种方式，删除原先版本或者不安装该版本。</li>
 <li>设置安装包的权限：chmod +x jdk-8u261-linux-x64.rpm</li>
 <li>rpm安装jdk1.8.0_u261：rpm -ivh jdk-8u261-linux-x64.rpm</li>
@@ -288,17 +290,18 @@
     <div class="article-entry" itemprop="articleBody">
        
   <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
  
       <!-- reward -->
@@ -594,7 +597,43 @@
 
 <!-- MathJax -->
 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
 <!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+            <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css">
+        
+    
+
 
 <!-- busuanzi  -->
 

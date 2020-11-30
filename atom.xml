@@ -24,7 +24,8 @@
     <updated>2020-11-30T03:13:03.264Z</updated>
     
     
-    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h3&gt;&lt;p&gt;现阶段文本分类方法需要基于大量的人为标注数据进行训练，这种方法缺乏实际应用性不说，而人类只需要基于描述待分类类别的少数单词就可以准确分类，因为人类对这些标签具有先验知识，能理解这些标签。&lt;/p&gt;
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;现阶段文本分类方法需要基于大量的人为标注数据进行训练，这种方法缺乏实际应用性不说，而人类只需要基于描述待分类类别的少数单词就可以准确分类，因为人类对这些标签具有先验知识，能理解这些标签。&lt;/p&gt;
 &lt;p&gt;当前文本分类方向较为前沿的是&lt;strong&gt;半监督文本分类方法&lt;/strong&gt;和&lt;strong&gt;零次学习方法&lt;/strong&gt;。半监督学习方法主要分为两种途径：&lt;strong&gt;基于增强学习的方法&lt;/strong&gt;和&lt;strong&gt;基于图的方法&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;增强学习方法&lt;/strong&gt;通常是通过产生新的例子，并对模型的预测进行正则化以范化模型性能，增强实例的方法一般采用通过反向翻译创建为真实文本序列、通过扰动或插值在模型的隐藏状态下创建。&lt;/p&gt;</summary>
     
@@ -46,8 +47,9 @@
     
     
     <summary type="html">&lt;p&gt;记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。&lt;/p&gt;
-&lt;h3 id=&quot;预安装jdk1-8-0&quot;&gt;&lt;a href=&quot;#预安装jdk1-8-0&quot; class=&quot;headerlink&quot; title=&quot;预安装jdk1.8.0&quot;&gt;&lt;/a&gt;预安装jdk1.8.0&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;从&lt;a href=&quot;https://www.oracle.com/java/technologies/javase-downloads.html%E4%B8%8B%E8%BD%BDjdk-8u261-linux-x64.rpm%EF%BC%8C%E8%AF%A5%E5%AE%89%E8%A3%85%E5%8C%85%E5%B7%B2%E7%BB%8F%E4%B8%8B%E8%BD%BD%E5%A5%BD%E4%BA%86%EF%BC%8C%E5%B9%B6%E5%AD%98%E4%BA%8E%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E4%B8%8B%E3%80%82&quot;&gt;https://www.oracle.com/java/technologies/javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。&lt;/a&gt;&lt;/li&gt;
+&lt;h3 id=&quot;预安装jdk1-8-0&quot;&gt;预安装jdk1.8.0&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;从https://www.oracle.com/java/technologies/javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。&lt;/li&gt;
 &lt;li&gt;如果本机上有别的java版本，可以采用两种方式，删除原先版本或者不安装该版本。&lt;/li&gt;
 &lt;li&gt;设置安装包的权限：chmod +x jdk-8u261-linux-x64.rpm&lt;/li&gt;
 &lt;li&gt;rpm安装jdk1.8.0_u261：rpm -ivh jdk-8u261-linux-x64.rpm&lt;/li&gt;
