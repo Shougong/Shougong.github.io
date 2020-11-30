@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-11-30T06:12:05.340Z</updated>
+  <updated>2020-11-30T09:20:43.274Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Topic Memory Networks for Short Text Classification</title>
+    <link href="http://example.com/2020/11/30/Topic-Memory-Networks-for-Short-Text-Classification/"/>
+    <id>http://example.com/2020/11/30/Topic-Memory-Networks-for-Short-Text-Classification/</id>
+    <published>2020-11-30T06:18:56.000Z</published>
+    <updated>2020-11-30T09:20:43.274Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;短文本分类因为数据稀疏特性，使得很多模型在该领域的性能表现不是很好（&lt;strong&gt;动机&lt;/strong&gt;）。以下Table 1为例：&lt;/p&gt;
+&lt;img src=&quot;/2020/11/30/Topic-Memory-Networks-for-Short-Text-Classification/image-20201130150631937.png&quot; alt=&quot;image-20201130150631937&quot; style=&quot;zoom:80%;&quot;&gt;
+&lt;p&gt;从Table 1可以看到，在没有充分的上下文的情况下，模型倾向于将测试样例划分到R1，而不是R2，即模型倾向于把句子划分给句子结构相似的类别，这样子的误分类样本广泛存在于诸如CNN、LSTM之类的深度网络模型。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="text classification" scheme="http://example.com/tags/text-classification/"/>
+    
+    <category term="topic model" scheme="http://example.com/tags/topic-model/"/>
+    
+  </entry>
   
   <entry>
     <title>Be More with Less, Hypergraph Attention Networks for Inductive Text Classification</title>
