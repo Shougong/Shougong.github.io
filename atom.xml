@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-11-30T06:04:47.218Z</updated>
+  <updated>2020-11-30T06:12:05.340Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Be More with Less, Hypergraph Attention Networks for Inductive Text Classification</title>
+    <link href="http://example.com/2020/11/30/Be-More-with-Less-Hypergraph-Attention-Networks-for-Inductive-Text-Classification/"/>
+    <id>http://example.com/2020/11/30/Be-More-with-Less-Hypergraph-Attention-Networks-for-Inductive-Text-Classification/</id>
+    <published>2020-11-30T06:08:33.000Z</published>
+    <updated>2020-11-30T06:12:05.340Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;这是发表于EMNLP 2020的一篇文章，主要对当前GNN模型存在的问题进行了改进。当前主流的GNN模型通常采用整个语料库中的单词对之间的共现特征作为图上节点的边关系，且在模型训练以前需要在整个语料库层面构建图结构，这带来了&lt;strong&gt;两个很严重的问题（文章的动机）：（i）模型无法捕获单词之间更高阶的交互特征；（ii）模型需要很大的计算开销&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;针对上述两个问题，文章受最近的&lt;strong&gt;超图神经网络&lt;/strong&gt;[1,2,3]的启发，利用对偶注意力机制，提出了一种归纳文本分类模型&lt;strong&gt;HyperGAT&lt;/strong&gt;，以此捕获单词之间的高阶交互特征，并降低模型计算复杂度。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="text classification" scheme="http://example.com/tags/text-classification/"/>
+    
+    <category term="GNNs" scheme="http://example.com/tags/GNNs/"/>
+    
+  </entry>
   
   <entry>
     <title>Cognitive Aspects-Based Short Text Representation with Named Entity, Concept and Knowledge</title>
