@@ -175,7 +175,7 @@
     <link href="http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"/>
     <id>http://example.com/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/</id>
     <published>2020-11-28T06:59:55.000Z</published>
-    <updated>2020-11-30T03:10:43.781Z</updated>
+    <updated>2020-11-30T09:24:33.905Z</updated>
     
     
     <summary type="html">&lt;p&gt;记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。&lt;/p&gt;
@@ -188,6 +188,8 @@
 &lt;li&gt;在命令行输入以下命令来配置java路径：&lt;/li&gt;&lt;/ul&gt;</summary>
     
     
+    
+    <category term="分布式" scheme="http://example.com/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
     
     
     <category term="hadoop" scheme="http://example.com/tags/hadoop/"/>

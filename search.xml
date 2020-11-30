@@ -1529,6 +1529,9 @@ a_{i} &amp;=\operatorname{softmax}\left(\gamma \alpha_{i}+(1-\gamma) \beta_{i}\r
 <p>登陆hbase的web界面，可以看到创建的数据库表：</p>
 <p><img src="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/image-20201105103935523.png" alt="image-20201105103935523"></p>
 ]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
       <tags>
         <tag>hadoop</tag>
       </tags>
