@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-11-30T04:52:10.289Z</updated>
+  <updated>2020-11-30T06:04:47.218Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,74 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Cognitive Aspects-Based Short Text Representation with Named Entity, Concept and Knowledge</title>
+    <link href="http://example.com/2020/11/30/Cognitive-Aspects-Based-Short-Text-Representation-with-Named-Entity-Concept-and-Knowledge/"/>
+    <id>http://example.com/2020/11/30/Cognitive-Aspects-Based-Short-Text-Representation-with-Named-Entity-Concept-and-Knowledge/</id>
+    <published>2020-11-30T06:02:51.000Z</published>
+    <updated>2020-11-30T06:04:47.218Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;短文本缺少足够的共同出现的单词和共享的上下文信息，具有稀疏和简短的特点，导致短文本分类问题效果不佳。因为单词、实体、概念和知识库中的实体对短文本分类具有不同的认知信息，现有的解决方法基于这些内容，从文本认知角度来丰富短文本的表示，通常包含三个方面：（1）丰富语义概念；（2）引入知识；（3）引入文本类别。这一角度的本质是增强短文本表示的语义，该方式有以下好处：（1）从知识库中挖掘实体关系可以增强短文本语义表示。（2）实体级别的表示形式可以帮助消除具有相同拼写的术语的歧义。（3）与单词和实体表示形式相比，概念表示形式更为抽象，且是基于关键字和实体的短文本表示的重要补充。但是先前的研究例如KPCNN和STCKA模型并没有充分利用知识库中的信息，&lt;strong&gt;仅考虑了知识库中的单个方面（实体或概念信息）&lt;/strong&gt;。针对这一问题，本文提出了ECKA模型。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="text classification" scheme="http://example.com/tags/text-classification/"/>
+    
+    <category term="Knowledge power" scheme="http://example.com/tags/Knowledge-power/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Deep Short Text Classification with Knowledge Powered Attention</title>
+    <link href="http://example.com/2020/11/30/Deep-Short-Text-Classification-with-Knowledge-Powered-Attention/"/>
+    <id>http://example.com/2020/11/30/Deep-Short-Text-Classification-with-Knowledge-Powered-Attention/</id>
+    <published>2020-11-30T05:58:19.000Z</published>
+    <updated>2020-11-30T06:00:05.018Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;引言&quot;&gt;引言&lt;/h3&gt;
+&lt;p&gt;这篇文章是AAAI 2019的论文，属于知识图谱在下游任务的应用。短文本分类一直是文档分类任务中比较难的一个任务，因为短文本缺乏足够的上下文信息，与段落和文档相比，不易分类。例如：&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&quot;Jay grew up in Taiwan.&quot;&lt;/p&gt;
+&lt;p&gt;上述文本中，&amp;quot;Jay&amp;quot;表示周杰伦，这是个人名，传统的文本分类模型会把这个视为一个新的词，这样子就会忽视&amp;quot;Jay&amp;quot;是一个歌手这一信息，这个信息会有助于将文本分类到娱乐类别，但是忽视这一信息就会导致模型将其误分类为错误的类别。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="text classification" scheme="http://example.com/tags/text-classification/"/>
+    
+    <category term="Knowledge power" scheme="http://example.com/tags/Knowledge-power/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Graph Convolutional Networks for Text Classification</title>
+    <link href="http://example.com/2020/11/30/Graph-Convolutional-Networks-for-Text-Classification/"/>
+    <id>http://example.com/2020/11/30/Graph-Convolutional-Networks-for-Text-Classification/</id>
+    <published>2020-11-30T05:51:33.000Z</published>
+    <updated>2020-11-30T05:56:23.838Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;TextCNN、RNN等模型在NLP领域应用广泛，但是这两种深度网络捕获的是局部连续单词序列中的语义和句法信息，会忽略掉非连续的、长距离的语义特征（全局特征），这也限制了模型性能的上限。文章使用了最近兴起的GCN模型解决文本分类问题，图神经网络（GNN）既能有效地捕获节点之间的丰富关系，也能保留图中的全局结构信息，这对改善CNN和RNN模型难以捕获全局特征带来了希望。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="text classification" scheme="http://example.com/tags/text-classification/"/>
+    
+    <category term="GCN" scheme="http://example.com/tags/GCN/"/>
+    
+  </entry>
   
   <entry>
     <title>北京记忆</title>
