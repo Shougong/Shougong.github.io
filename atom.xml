@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-11-30T03:13:03.264Z</updated>
+  <updated>2020-11-30T04:52:10.289Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>北京记忆</title>
+    <link href="http://example.com/2020/11/30/%E5%8C%97%E4%BA%AC%E8%AE%B0%E5%BF%86/"/>
+    <id>http://example.com/2020/11/30/%E5%8C%97%E4%BA%AC%E8%AE%B0%E5%BF%86/</id>
+    <published>2020-11-30T04:50:12.000Z</published>
+    <updated>2020-11-30T04:52:10.289Z</updated>
+    
+    
+    
+    
+    <category term="旅行" scheme="http://example.com/categories/%E6%97%85%E8%A1%8C/"/>
+    
+    
+    <category term="旅行" scheme="http://example.com/tags/%E6%97%85%E8%A1%8C/"/>
+    
+  </entry>
   
   <entry>
     <title>Text Classification Using Label Names Only, A Language Model Self-Training Approach</title>
@@ -67,16 +84,10 @@
     <link href="http://example.com/2020/11/28/hello-world/"/>
     <id>http://example.com/2020/11/28/hello-world/</id>
     <published>2020-11-28T03:00:42.467Z</published>
-    <updated>2020-11-28T03:00:42.467Z</updated>
+    <updated>2020-11-30T04:51:48.648Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
-        
-      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</summary>
     
     
     
