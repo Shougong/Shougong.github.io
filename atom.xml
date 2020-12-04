@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-04T00:55:25.110Z</updated>
+  <updated>2020-12-04T07:28:29.480Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,8 +21,12 @@
     <link href="http://example.com/2020/12/04/Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks/"/>
     <id>http://example.com/2020/12/04/Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks/</id>
     <published>2020-12-04T00:53:39.000Z</published>
-    <updated>2020-12-04T00:55:25.110Z</updated>
+    <updated>2020-12-04T07:28:29.480Z</updated>
     
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;这篇文章发表于ACL 2020，采用外部知识库和提出的一种辅助任务来做层次文本分类。因为之前一直接触的是单元标签类别，因此有些名词不太清楚，在这里先解释一下。&lt;/p&gt;
+&lt;p&gt;文本分类从样本对应的标签数的角度来说，可以分成多元标签分类和单标签分类。例如一段文本可能既可以被划分为文具也可以被划分为日常用品，这就是典型的多分类，但是单标签则是一段文本只有一种对应分类，例如经济。在多元标签分类里面，有可以细分两种分类方向：hierarchical text classification和flat text classification，这两种的区别在于不同的标签之间是存在某种依赖关系的，例如：如一部电影可能是“喜剧片”，又是“爱情片”，而这电影的种类标签是平行的，没有层级结构；如一个电视产品，它属于“大家电”，也属于“家用电器”，而“大家电”标签是&amp;quot;家用电器&amp;quot;标签的子类，这产品所属种类标签是有层级结构，所以该类任务称为层级性多元标签分类。（摘自&lt;a href=&quot;https://zhuanlan.zhihu.com/p/108981524&quot;&gt;知乎&lt;/a&gt;）。&lt;/p&gt;</summary>
     
     
     
@@ -107,7 +111,7 @@
     <link href="http://example.com/2020/11/30/Deep-Short-Text-Classification-with-Knowledge-Powered-Attention/"/>
     <id>http://example.com/2020/11/30/Deep-Short-Text-Classification-with-Knowledge-Powered-Attention/</id>
     <published>2020-11-30T05:58:19.000Z</published>
-    <updated>2020-11-30T06:00:05.018Z</updated>
+    <updated>2020-12-04T07:30:07.125Z</updated>
     
     
     <summary type="html">&lt;h3 id=&quot;引言&quot;&gt;引言&lt;/h3&gt;

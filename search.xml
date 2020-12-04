@@ -3,7 +3,81 @@
   <entry>
     <title>Efficient Strategies for Hierarchical Text Classification External Knowledge and Auxiliary Tasks</title>
     <url>/2020/12/04/Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h3 id="概述">概述</h3>
+<p>这篇文章发表于ACL 2020，采用外部知识库和提出的一种辅助任务来做层次文本分类。因为之前一直接触的是单元标签类别，因此有些名词不太清楚，在这里先解释一下。</p>
+<p>文本分类从样本对应的标签数的角度来说，可以分成多元标签分类和单标签分类。例如一段文本可能既可以被划分为文具也可以被划分为日常用品，这就是典型的多分类，但是单标签则是一段文本只有一种对应分类，例如经济。在多元标签分类里面，有可以细分两种分类方向：hierarchical text classification和flat text classification，这两种的区别在于不同的标签之间是存在某种依赖关系的，例如：如一部电影可能是“喜剧片”，又是“爱情片”，而这电影的种类标签是平行的，没有层级结构；如一个电视产品，它属于“大家电”，也属于“家用电器”，而“大家电”标签是&quot;家用电器&quot;标签的子类，这产品所属种类标签是有层级结构，所以该类任务称为层级性多元标签分类。（摘自<a href="https://zhuanlan.zhihu.com/p/108981524">知乎</a>）。<a id="more"></a></p>
+<p>回到文章，初读题目，我有两个问题，一个是文章是如何对external knowledge进行处理的，由于外部知识库中的知识与模型的词向量不属于一个语义空间，因此有效的映射方法会影响模型的有效性能；另一个是什么样的auxiliary tasks来有效地提升层次文本分类的效果的。</p>
+<h3 id="动机和主要贡献">动机和主要贡献</h3>
+<p>文章的动机比较明显，在introduction部分已经提到：how can we improve HTC at a lower computational cost ?在这一动机下，文章开展了研究，与传统的提出新模型的路径不同，这篇文章的思路是提升baseline的性能，比较有意思的是，文章采用一系列的推理过程来执行类别预测，此外呢，将HTC任务定义为序列到序列的问题，因为较低层次的类别以较高层次的为条件，可以抽象成一种顺序关系。</p>
+<p>以下是文章的主要贡献：</p>
+<ul>
+<li>提出了一种鲁棒的HTC模型，具有参数少，训练时间短，遵循序列到序列学习的特点。</li>
+<li>提出了一种实际应用的辅助任务，提高了模型预测的能力。</li>
+<li>探索了一种导入与类别有关的外部知识库的策略，并将外部知识编码到词向量空间中。</li>
+</ul>
+<h3 id="模型">模型</h3>
+<p>模型采取了主流的encoder-decoder这样的结构，从左到右依次为embedding layer、encoder、attention layer和decoder。</p>
+<p><strong>Embedding layer</strong>：采取Common Crawl做预训练词向量，得到每个文本的输入<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>。</p>
+<p><strong>Encoder</strong>：encoder部分以embedding layer得到的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>作为输入，采取了双向GRU单元，会得到每个时间步的隐藏层向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">h_{i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。</p>
+<p><strong>Attention layer</strong>：attention层会对每个<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">h_{i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>产生一个上下文向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">a_{i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。严格来说，encoder和attention layer应该划分为一个，本质算得上是RNN+Att。在这一步，除了encoder的输出，文章还对每个class，使用外部知识库进行定义（这一操作称之为CDV），用外部知识库的信息编码class，然后一同送入该层来预测下一层的类别。</p>
+<p><strong>Decoder</strong>：文章利用上下文向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">a_{i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>和隐藏向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">h_{i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>输入decoder，严格来说还要有CDV表示，来预测得到每一层的class。</p>
+<p><strong>CDV表示</strong>：这部分文章从外部知识库<a href="https://developer.oxforddictionaries.com/">Oxford Dictionaries API</a>中获取class的定义，然后使用预训练方法向量化每个token，最后使用average操作。个人感觉这个操作不太合适，因为每个token可能是多义的，简单的average可能会导致混入不必要的噪声，从而影响external knowledge的效果。</p>
+<p><strong>Auxiliary task</strong>：该任务的思想来源于反转单词顺序，通过改变输出顺序中目标类别水平的顺序，来学习更可靠的表示。因为作者观察到，按照先前的工作一层层下传，在误差传播阶段，最特定类别的预测将比更一般类别的影响较小，这样子越后面的目标类就越难学习到与上一个类之间的关系（梯度消失），该任务的具体操作并没有细说。</p>
+<p><strong>Adapted beam search</strong>：这部分是在类别预测上应用的，采取了一种波束搜索的方法，这部分没有细看，主要关注在CDV的引入上，文章将decoder的输出与CDV做了余弦相似度计算，选取top-k的候选集合，然后对这些候选集做了一次average，得到了向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span></span></span></span>，最后用该向量进行分类。</p>
+<h3 id="实验">实验</h3>
+<h4 id="数据集">数据集</h4>
+<img src="/2020/12/04/Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks/image-20201204151914341.png" alt="image-20201204151914341" style="zoom:80%;">
+<p>以上是文章采用的两个数据集，以及数据集的相关参数。</p>
+<h4 id="参数设置">参数设置</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hidden size</td>
+<td>GRU隐藏层单元个数</td>
+<td>300</td>
+</tr>
+<tr>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\beta_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
+<td>Adam优化器参数</td>
+<td>0.9</td>
+</tr>
+<tr>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\beta_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.05278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
+<td>Adam优化器参数</td>
+<td>0.98</td>
+</tr>
+<tr>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">ϵ</span></span></span></span></td>
+<td>Adam优化器参数</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mrow><mo>−</mo><mn>9</mn></mrow></msup></mrow><annotation encoding="application/x-tex">10^{-9}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></span></td>
+</tr>
+<tr>
+<td>dropout</td>
+<td>dropout比率</td>
+<td>0.3</td>
+</tr>
+<tr>
+<td>epochs</td>
+<td>epoch数目</td>
+<td>30</td>
+</tr>
+<tr>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.0037em;">α</span></span></span></span></td>
+<td>学习率</td>
+<td>0.5</td>
+</tr>
+</tbody>
+</table>
+<h3 id="实验结果">实验结果</h3>
+<p><img src="/2020/12/04/Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks/image-20201204152004920.png" alt="image-20201204152004920"></p>
+]]></content>
       <categories>
         <category>paper notes</category>
       </categories>
