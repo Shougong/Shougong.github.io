@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Efficient Strategies for Hierarchical Text Classification External Knowledge and Auxiliary Tasks</title>
+    <url>/2020/12/04/Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>paper notes</category>
+      </categories>
+      <tags>
+        <tag>text classification</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Topic Memory Networks for Short Text Classification</title>
     <url>/2020/11/30/Topic-Memory-Networks-for-Short-Text-Classification/</url>
     <content><![CDATA[<h3 id="概述">概述</h3>
