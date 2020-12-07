@@ -4,7 +4,7 @@
     <title>TextGCN复现</title>
     <url>/2020/12/07/TextGCN%E5%A4%8D%E7%8E%B0/</url>
     <content><![CDATA[<h3 id="概述">概述</h3>
-<p>本篇文章是对paper：<a href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1809.05679">Graph Convolutional Networks for Text Classification</a>工作的复现，代码主要借鉴了<a href="https://github.com/yao8839836/text_gcn">论文原作者的</a>和另一个<a href="https://github.com/chengsen/PyTorch_TextGCN">pytorch版本的</a>，本文代码已经全部托管到我的<a href="https://github.com/Shougong/text-gcn-pytorch">github</a>中。</p>
+<p>本篇文章是对paper：<a href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1809.05679">Graph Convolutional Networks for Text Classification</a>工作的复现，代码主要借鉴了<a href="https://github.com/yao8839836/text_gcn">论文原作者的</a>和另一个<a href="https://github.com/chengsen/PyTorch_TextGCN">pytorch版本的</a>，本文代码已经全部托管到我的<a href="https://github.com/Shougong/TextGCN-pytorch">github</a>中。</p>
 <p>整个复现工作大致分为以下几个步骤：数据预处理、图构建、模型构建、训练和测试模型。</p>
 <p>采用的是原论文中使用的20NG数据集。</p>
 <p>最后效果与论文中的比较接近。</p>
