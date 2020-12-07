@@ -145,6 +145,144 @@
     
     
     <article
+  id="post-TextGCN复现"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/12/07/TextGCN%E5%A4%8D%E7%8E%B0/"
+    >TextGCN复现</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/12/07/TextGCN%E5%A4%8D%E7%8E%B0/" class="article-date">
+  <time datetime="2020-12-07T01:49:32.000Z" itemprop="datePublished">2020-12-07</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/paper-notes/">paper notes</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="概述">概述</h3>
+<p>本篇文章是对paper：<a href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1809.05679">Graph Convolutional Networks for Text Classification</a>工作的复现，代码主要借鉴了<a target="_blank" rel="noopener" href="https://github.com/yao8839836/text_gcn">论文原作者的</a>和另一个<a target="_blank" rel="noopener" href="https://github.com/chengsen/PyTorch_TextGCN">pytorch版本的</a>。</p>
+<p>整个复现工作大致分为以下几个步骤：数据预处理、图构建、模型构建、训练和测试模型。</p>
+<p>采用的是原论文中使用的20NG数据集。</p>
+<p>最后效果与论文中的比较接近。</p>
+<p>实验结果：</p>
+<table>
+<thead>
+<tr>
+<th>数据集</th>
+<th>20NG</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TextGCN</td>
+<td>0.8634</td>
+</tr>
+<tr>
+<td>TextGCN（ours）</td>
+<td>0.8533</td>
+</tr>
+</tbody>
+</table> 
+      <a class="article-more-link" href="/2020/12/07/TextGCN%E5%A4%8D%E7%8E%B0/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TextGCN/" rel="tag">TextGCN</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytorch/" rel="tag">pytorch</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-KST-GCN-A-Knowledge-Driven-Spatial-Temporal-Graph-Convolutional-Network-for-Traffic-Forecasting"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/12/04/KST-GCN-A-Knowledge-Driven-Spatial-Temporal-Graph-Convolutional-Network-for-Traffic-Forecasting/"
+    >KST-GCN A Knowledge-Driven Spatial-Temporal Graph Convolutional Network for Traffic Forecasting</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/12/04/KST-GCN-A-Knowledge-Driven-Spatial-Temporal-Graph-Convolutional-Network-for-Traffic-Forecasting/" class="article-date">
+  <time datetime="2020-12-04T11:15:29.000Z" itemprop="datePublished">2020-12-04</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/paper-notes/">paper notes</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="概述">概述</h3>
+<p>这是篇最近刚发表在arxiv上的文章，想学习下文章知识驱动的方法，此外，也想了解下在图像领域应用知识图谱的内容。</p>
+<p>这是一篇针对交通流预测的文章，文章认为，在考虑时空特征的交通条件下，引入外部知识，能提高交通流预测的准确率，但是现有的模型几乎没有考虑外部知识，或者在交通中忽视了这种复杂相关特征，这一点是文章的核心动机。</p>
+<p>但很显然的是，外部知识图谱与交通图显然是两个异构图，如何合理的融合这两种异构图是解决该知识驱动场景的一大关键。针对这一问题，文章提出来一种叫做KST-GCN的模型（在ST-GCN的基础上引入知识驱动）。具体做法就是，使用KS-Cells结合两种图上的信息，然后使用GRU来捕获交通图的时序状态。</p> 
+      <a class="article-more-link" href="/2020/12/04/KST-GCN-A-Knowledge-Driven-Spatial-Temporal-Graph-Convolutional-Network-for-Traffic-Forecasting/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Knowledge-Driven/" rel="tag">Knowledge-Driven</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/knowledge-GCN/" rel="tag">knowledge GCN</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks"
   class="article article-type-post"
   itemscope
@@ -603,122 +741,14 @@
 </article>
 
     
-    <article
-  id="post-Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7安装"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
-    >Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/" class="article-date">
-  <time datetime="2020-11-28T06:59:55.000Z" itemprop="datePublished">2020-11-28</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。</p>
-<h3 id="预安装jdk1-8-0">预安装jdk1.8.0</h3>
-<ul>
-<li>从https://www.oracle.com/java/technologies/javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。</li>
-<li>如果本机上有别的java版本，可以采用两种方式，删除原先版本或者不安装该版本。</li>
-<li>设置安装包的权限：chmod +x jdk-8u261-linux-x64.rpm</li>
-<li>rpm安装jdk1.8.0_u261：rpm -ivh jdk-8u261-linux-x64.rpm</li>
-<li>在命令行输入以下命令来配置java路径：</li></ul> 
-      <a class="article-more-link" href="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hadoop/" rel="tag">hadoop</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-hello-world"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/11/28/hello-world/"
-    >Hello World</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/11/28/hello-world/" class="article-date">
-  <time datetime="2020-11-28T03:00:42.467Z" itemprop="datePublished">2020-11-28</time>
-</a>    
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p> 
-      <a class="article-more-link" href="/2020/11/28/hello-world/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
   </article>
   
 
+  
+  <nav class="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+  </nav>
   
 </section>
 </div>

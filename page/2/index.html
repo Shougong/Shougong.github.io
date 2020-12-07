@@ -9,7 +9,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    tags |  Shougong&#39;s Blog
+     Shougong&#39;s Blog
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -43,13 +43,231 @@
     
       
     <main class="content on">
-      <section class="outer">
-  
-    <h1 class="page-type-title">Tags</h1>
-    <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCN/" rel="tag">GCN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GNNs/" rel="tag">GNNs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Knowledge-power/" rel="tag">Knowledge power</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Knowledge-Driven/" rel="tag">Knowledge-Driven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextGCN/" rel="tag">TextGCN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/" rel="tag">hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/knowledge-GCN/" rel="tag">knowledge GCN</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytorch/" rel="tag">pytorch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/text-classification/" rel="tag">text classification</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/topic-model/" rel="tag">topic model</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%85%E8%A1%8C/" rel="tag">旅行</a></li></ul>
-  
+      
+<section class="cover">
+    
+      
+      <a class="forkMe" href="https://github.com/Shougong"
+        target="_blank"><img width="149" height="149" src="/images/forkme.png"
+          class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+    
+  <div class="cover-frame">
+    <div class="bg-box">
+      <img src="/images/cover1.jpg" alt="image frame" />
+    </div>
+    <div class="cover-inner text-center text-white">
+      <h1><a href="/">Shougong&#39;s Blog</a></h1>
+      <div id="subtitle-box">
+        
+        <span id="subtitle"></span>
+        
+      </div>
+      <div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="cover-learn-more">
+    <a href="javascript:void(0)" class="anchor"><i class="ri-arrow-down-line"></i></a>
+  </div>
 </section>
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script>
+
+
+<!-- Subtitle -->
+
+  <script>
+    try {
+      var typed = new Typed("#subtitle", {
+        strings: ['面朝大海，春暖花开', '愿你一生努力，一生被爱', '想要的都拥有，得不到的都释怀'],
+        startDelay: 0,
+        typeSpeed: 200,
+        loop: true,
+        backSpeed: 100,
+        showCursor: true
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  </script>
+  
+<div id="main">
+  <section class="outer">
+  
+  
+
+<div class="notice" style="margin-top:50px">
+    <i class="ri-heart-fill"></i>
+    <div class="notice-content" id="broad"></div>
+</div>
+<script type="text/javascript">
+    fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("broad").innerHTML = data.hitokoto;
+        })
+        .catch(console.error)
+</script>
+
+<style>
+    .notice {
+        padding: 20px;
+        border: 1px dashed #e6e6e6;
+        color: #969696;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        background: #fbfbfb50;
+        border-radius: 10px;
+    }
+
+    .notice i {
+        float: left;
+        color: #999;
+        font-size: 16px;
+        padding-right: 10px;
+        vertical-align: middle;
+        margin-top: -2px;
+    }
+
+    .notice-content {
+        display: initial;
+        vertical-align: middle;
+    }
+</style>
+  
+  <article class="articles">
+    
+    
+    
+    
+    <article
+  id="post-Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7安装"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+    >Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2020-11-28T06:59:55.000Z" itemprop="datePublished">2020-11-28</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>记录Hadoop-2.10.1+ZooKeeper-3.6.2+Hbase-2.3.2+Hive-2.3.7安装的一次经历。</p>
+<h3 id="预安装jdk1-8-0">预安装jdk1.8.0</h3>
+<ul>
+<li>从https://www.oracle.com/java/technologies/javase-downloads.html下载jdk-8u261-linux-x64.rpm，该安装包已经下载好了，并存于安装目录下。</li>
+<li>如果本机上有别的java版本，可以采用两种方式，删除原先版本或者不安装该版本。</li>
+<li>设置安装包的权限：chmod +x jdk-8u261-linux-x64.rpm</li>
+<li>rpm安装jdk1.8.0_u261：rpm -ivh jdk-8u261-linux-x64.rpm</li>
+<li>在命令行输入以下命令来配置java路径：</li></ul> 
+      <a class="article-more-link" href="/2020/11/28/Hadoop-2-10-1-ZooKeeper-3-6-2-Hbase-2-3-2-Hive-2-3-7%E5%AE%89%E8%A3%85/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hadoop/" rel="tag">hadoop</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
+  id="post-hello-world"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/11/28/hello-world/"
+    >Hello World</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/11/28/hello-world/" class="article-date">
+  <time datetime="2020-11-28T03:00:42.467Z" itemprop="datePublished">2020-11-28</time>
+</a>    
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p> 
+      <a class="article-more-link" href="/2020/11/28/hello-world/"
+        >阅读更多...</a
+      >
+       
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+  </article>
+  
+
+  
+  <nav class="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+  
+</section>
+</div>
 
       <footer class="footer">
   <div class="outer">

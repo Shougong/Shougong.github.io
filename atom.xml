@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-04T07:28:29.480Z</updated>
+  <updated>2020-12-07T03:12:30.680Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,79 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>TextGCN复现</title>
+    <link href="http://example.com/2020/12/07/TextGCN%E5%A4%8D%E7%8E%B0/"/>
+    <id>http://example.com/2020/12/07/TextGCN%E5%A4%8D%E7%8E%B0/</id>
+    <published>2020-12-07T01:49:32.000Z</published>
+    <updated>2020-12-07T03:12:30.680Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;本篇文章是对paper：&lt;a href=&quot;https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1809.05679&quot;&gt;Graph Convolutional Networks for Text Classification&lt;/a&gt;工作的复现，代码主要借鉴了&lt;a href=&quot;https://github.com/yao8839836/text_gcn&quot;&gt;论文原作者的&lt;/a&gt;和另一个&lt;a href=&quot;https://github.com/chengsen/PyTorch_TextGCN&quot;&gt;pytorch版本的&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;整个复现工作大致分为以下几个步骤：数据预处理、图构建、模型构建、训练和测试模型。&lt;/p&gt;
+&lt;p&gt;采用的是原论文中使用的20NG数据集。&lt;/p&gt;
+&lt;p&gt;最后效果与论文中的比较接近。&lt;/p&gt;
+&lt;p&gt;实验结果：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;数据集&lt;/th&gt;
+&lt;th&gt;20NG&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;TextGCN&lt;/td&gt;
+&lt;td&gt;0.8634&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TextGCN（ours）&lt;/td&gt;
+&lt;td&gt;0.8533&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="TextGCN" scheme="http://example.com/tags/TextGCN/"/>
+    
+    <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>KST-GCN A Knowledge-Driven Spatial-Temporal Graph Convolutional Network for Traffic Forecasting</title>
+    <link href="http://example.com/2020/12/04/KST-GCN-A-Knowledge-Driven-Spatial-Temporal-Graph-Convolutional-Network-for-Traffic-Forecasting/"/>
+    <id>http://example.com/2020/12/04/KST-GCN-A-Knowledge-Driven-Spatial-Temporal-Graph-Convolutional-Network-for-Traffic-Forecasting/</id>
+    <published>2020-12-04T11:15:29.000Z</published>
+    <updated>2020-12-07T01:49:40.384Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;这是篇最近刚发表在arxiv上的文章，想学习下文章知识驱动的方法，此外，也想了解下在图像领域应用知识图谱的内容。&lt;/p&gt;
+&lt;p&gt;这是一篇针对交通流预测的文章，文章认为，在考虑时空特征的交通条件下，引入外部知识，能提高交通流预测的准确率，但是现有的模型几乎没有考虑外部知识，或者在交通中忽视了这种复杂相关特征，这一点是文章的核心动机。&lt;/p&gt;
+&lt;p&gt;但很显然的是，外部知识图谱与交通图显然是两个异构图，如何合理的融合这两种异构图是解决该知识驱动场景的一大关键。针对这一问题，文章提出来一种叫做KST-GCN的模型（在ST-GCN的基础上引入知识驱动）。具体做法就是，使用KS-Cells结合两种图上的信息，然后使用GRU来捕获交通图的时序状态。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="knowledge GCN" scheme="http://example.com/tags/knowledge-GCN/"/>
+    
+    <category term="Knowledge-Driven" scheme="http://example.com/tags/Knowledge-Driven/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Efficient Strategies for Hierarchical Text Classification External Knowledge and Auxiliary Tasks</title>
     <link href="http://example.com/2020/12/04/Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks/"/>
     <id>http://example.com/2020/12/04/Efficient-Strategies-for-Hierarchical-Text-Classification-External-Knowledge-and-Auxiliary-Tasks/</id>
     <published>2020-12-04T00:53:39.000Z</published>
-    <updated>2020-12-04T07:28:29.480Z</updated>
+    <updated>2020-12-04T11:05:46.056Z</updated>
     
     
     <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
