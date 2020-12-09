@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-07T05:26:22.273Z</updated>
+  <updated>2020-12-09T03:31:58.669Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Graph Attention Networks</title>
+    <link href="http://example.com/2020/12/09/Graph-Attention-Networks/"/>
+    <id>http://example.com/2020/12/09/Graph-Attention-Networks/</id>
+    <published>2020-12-09T02:03:45.000Z</published>
+    <updated>2020-12-09T03:31:58.669Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;这篇文章发表于ICLR 2018，属于现有技术在新模型上的一种应用。&lt;/p&gt;
+&lt;p&gt;论文地址：&lt;a href=&quot;https://arxiv.org/abs/1710.10903&quot;&gt;https://arxiv.org/abs/1710.10903&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;论文代码：&lt;a href=&quot;https://github.com/Diego999/pyGAT&quot;&gt;https://github.com/Diego999/pyGAT&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;文章的核心是将attention机制与当前GNNs模型相结合，提出了GAT模型。那么文章是怎么做的attention的呢？（这部分将会在模型部分进行介绍）。&lt;/p&gt;
+&lt;p&gt;GNNs系列模型大致分为两大类：基于频谱域和非频谱域。两类的区别在于，基于频谱域的方法将卷积操作定义在傅里叶域，这种方法需要计算图拉普拉斯矩阵的特征分解，这需要很大的计算开销，而且模型只能针对特定的图结构，因为不同的图结构对应的拉普拉斯矩阵的特征分解不同；而非频谱域方法则是通过聚合邻域节点的信息，直接在图上进行卷积操作，但是现有的方法无法适应不同邻域大小，通常通过对节点设定固定大小进行采样。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="GNNs" scheme="http://example.com/tags/GNNs/"/>
+    
+  </entry>
   
   <entry>
     <title>TextGCN复现</title>
@@ -65,7 +89,7 @@
     <link href="http://example.com/2020/12/04/KST-GCN-A-Knowledge-Driven-Spatial-Temporal-Graph-Convolutional-Network-for-Traffic-Forecasting/"/>
     <id>http://example.com/2020/12/04/KST-GCN-A-Knowledge-Driven-Spatial-Temporal-Graph-Convolutional-Network-for-Traffic-Forecasting/</id>
     <published>2020-12-04T11:15:29.000Z</published>
-    <updated>2020-12-07T08:31:26.221Z</updated>
+    <updated>2020-12-07T08:36:01.331Z</updated>
     
     
     <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
