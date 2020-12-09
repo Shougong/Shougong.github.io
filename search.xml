@@ -192,6 +192,13 @@ c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></spa
 <p>GAT在inductive任务中的结果。</p>
 <p><img src="/2020/12/09/Graph-Attention-Networks/image-20201209112749828.png" alt="image-20201209112749828"></p>
 <p>取出第一层隐藏层向量，使用t-SNE算法进行降维可视化，可以看到不同类别的节点能被很好的区分。</p>
+<h3 id="总结">总结</h3>
+<ul>
+<li>GAT 的时间复杂度为 O(|V|FF’+|E|F’)，其中 |V|FF’ 是计算所有节点特征向量变换的时间复杂度 (即 Wh)，|E|F’ 是计算 Attention 的时间复杂度。</li>
+<li>GAT 不依赖于完整的图结构，只依赖于边，因此可以用于 inductive 任务。</li>
+<li>GAT 可用于有向图。</li>
+<li>采用 Attention 机制，可以为不同的邻居节点分配不同的权重。</li>
+</ul>
 ]]></content>
       <categories>
         <category>paper notes</category>
