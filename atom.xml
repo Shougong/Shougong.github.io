@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-09T03:55:04.887Z</updated>
+  <updated>2020-12-10T07:40:18.870Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,38 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Heterogeneous Graph Attention Networks for Semi-supervised Short Text Classification</title>
+    <link href="http://example.com/2020/12/10/Heterogeneous-Graph-Attention-Networks-for-Semi-supervised-Short-Text-Classification/"/>
+    <id>http://example.com/2020/12/10/Heterogeneous-Graph-Attention-Networks-for-Semi-supervised-Short-Text-Classification/</id>
+    <published>2020-12-10T00:59:15.000Z</published>
+    <updated>2020-12-10T07:40:18.870Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;这是19年发表在EMNLP上的文章，主要针对短文本分类做的相关工作。&lt;/p&gt;
+&lt;p&gt;论文地址：&lt;a href=&quot;https://www.aclweb.org/anthology/D19-1488/&quot;&gt;https://www.aclweb.org/anthology/D19-1488/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;代码地址：&lt;a href=&quot;https://github.com/ytc272098215/HGAT&quot;&gt;https://github.com/ytc272098215/HGAT&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;文章主要立足于两个问题展开研究：异构图网络和半监督。&lt;/p&gt;
+&lt;p&gt;使用半监督的原因是为了在很多实际场景下，标记数据通常是很少的，因此传统的监督学习方法很难有实际应用。&lt;/p&gt;
+&lt;p&gt;异构图网络则是主要用来解决建图时，针对短文本的稀疏性所引入的不同类型的特征，并使用层次attention机制对不同特征分配不同的权重，以解决引入特征后所带来的噪声问题。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
+    
+    
+    <category term="text classification" scheme="http://example.com/tags/text-classification/"/>
+    
+    <category term="GNNs" scheme="http://example.com/tags/GNNs/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Graph Attention Networks</title>
     <link href="http://example.com/2020/12/09/Graph-Attention-Networks/"/>
     <id>http://example.com/2020/12/09/Graph-Attention-Networks/</id>
     <published>2020-12-09T02:03:45.000Z</published>
-    <updated>2020-12-09T03:55:04.887Z</updated>
+    <updated>2020-12-09T07:30:47.182Z</updated>
     
     
     <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
