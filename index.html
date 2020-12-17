@@ -145,6 +145,101 @@
     
     
     <article
+  id="post-A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/12/17/A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios/"
+    >A Survey on Recent Approaches for Natural Language Processing in Low-Resource Scenarios</a> 
+</h2>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/12/17/A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios/" class="article-date">
+  <time datetime="2020-12-17T11:48:43.000Z" itemprop="datePublished">2020-12-17</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/paper-notes/">paper notes</a>
+  </div>
+   
+    </div>
+      
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h3 id="概述">概述</h3>
+<p>这篇文章是最近才发表到arxiv上的，是对近期low-resource方向的一个总结。因为无论是短文本相关的分类还是现阶段nlp领域的关注方向，目前都着眼于解决数据或者特征稀疏情况下，如何保证优秀性能的问题，希望能对自己有一些启发。</p>
+<p>下图是文章对一些Low-Resource方法的调查总结。</p>
+<p><img src="/2020/12/17/A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios/image-20201217201950046.png" alt="image-20201217201950046"></p>
+<h3 id="low-resource定义">Low-Resource定义</h3>
+<p>文章对Low-Resource进行了定义，即涵盖了低数据量的语言和某种特定领域的语言，在数据上具有低质量、数据集大小有限的特点，这样的情况称之为Low-Resource。</p>
+<h3 id="资源可靠性">资源可靠性</h3>
+<p>文章从资源可靠性角度将Low-Resource设置分成三种：特定任务标签、无标签语言文本和辅助数据。这部分实际上是从数据可靠性维度，对利用资源的具体场景进行了探讨。</p>
+<ul>
+<li><strong>特定任务标签</strong>：对于特定任务，其标签需要人为去创建，因为对于海量数据来说，标定数据量是非常小的，这就既费时又费力，在这方面解决的方法有自训练、半监督和无监督方法。</li>
+<li><strong>无标签语言文本</strong>：现在很多nlp的模型都以无标签文本的embedding形式作为输入进行训练，因此也需要考虑这类资源的可靠性。</li>
+<li><strong>辅助数据</strong>：现在阶段技术的发展，为解决数据稀疏问题提供了很多辅助数据，例如迁移学习方法和远程监督方法，因此，这些辅助数据的可靠性也需要纳入资源可靠性的角度。</li>
+</ul>
+<h3 id="low-resource方法分类">Low-Resource方法分类</h3>
+<p>文章将Low-Resource方法分为两大类：生成额外标签数据、迁移学习和一些其他的机器学习方法。</p>
+<h4 id="生成额外标签数据">生成额外标签数据</h4>
+<p>这类方法的代表有数据增强、远程监督、交叉语言注入和带噪标签学习。</p>
+<h5 id="数据增强">数据增强</h5>
+<p>数据增强方法通过不修改实例标签的转换，来修改现有实例的特征。典型的方法有：计算机视觉领域对图像进行诸如旋转、平移等变换操作；在nlp领域，可以使用同义词、同类型实体、具有相同形态的单词的等价词替换，在句子层面则可以根据句子结构进行扩充；此外该方法还能通过引入错误变换更改标签的方法进行数据扩充。</p>
+<p>注：文章中说到，数据增强方法在nlp中并未被大量使用，但这是解决数据稀疏问题的一个比较好的思路。</p>
+<h5 id="远程监督">远程监督</h5>
+<p>远程监督方法不改变无标签数据，相关标签通过半自动/全自动过程从一个外部信息源获取。该方法属于对辅助数据的利用，比较典型的有：利用外部知识源来生成标签。</p>
+<p>缺点：现阶段的远程监督方法并未对技术复杂性、算法的耗时开销和生成的标签质量进行考虑，这造成不同方法之间很难有可比性；此外在低资源场景下，外部信息源这类辅助数据也很难获得。</p>
+<h5 id="交叉语言注入">交叉语言注入</h5>
+<p>交叉语言注入方法使用高资源语言训练一个特定任务的分类器，然后使用平行语料库，将未标记的低资源数据与高资源语言中的等效数据对齐，在高资源语言中，可以使用上述分类器获取标签，然后基于平行文本中标记之间的对齐方式将这些标签（高资源文本上的）注入到低资源语言中的文本，该方法可以视为一种远程监督方法。</p>
+<p>缺点：对辅助数据的要求很高，既需要高资源语言的标签，又需要将其注入到低资源语言。</p>
+<h5 id="带噪标签学习">带噪标签学习</h5>
+<p>带噪标签学习方法旨在消除远程监督方法的负面影响，主流的有噪声过滤和噪声建模两种方法。</p>
+<p><strong>噪声过滤</strong>：该方法移除了训练集中不正确的可能性很高的标签样本，以提高模型的准确率。典型的方法有：概率阈值设定、二进制分类器、使用基于强化学习的代理和软过滤。</p>
+<p><strong>噪声建模</strong>：对标签中的噪声进行建模也可以消除噪声对模型性能的影响。常见的方法有：利用混淆矩阵估计干净和带噪标签的关系；通过构建噪声模型将噪声转移到一个不可见的干净标签分布。</p>
+<h4 id="迁移学习">迁移学习</h4>
+<p>迁移学习通过对学习到的表示和模型进行迁移，从而减少了对标签目标数据的依赖。这主要体现在两个方面：未加标签的数据可用于获得经过预训练的语言表示形式、辅助数据可用于训练和传递相同语言的相关任务或其他领域语言的相同（或相似）任务的模型。</p>
+<p>该技术通常可以分为预训练语言表示、多语言迁移、多语言建模和特定领域的预训练四种。</p>
+<h5 id="预训练语言表示">预训练语言表示</h5>
+<p>该方法借助预训练语言模型，通过使用先前的模型学习到的知识来克服标记数据的不足，从而在较低使用率下使用。</p>
+<h5 id="多语言迁移">多语言迁移</h5>
+<p>多语言迁移方法利用高资源语言中的可用标签来丰富低资源语言。常见的方法有通过创建多种语言的通用多语言嵌入空间来转移用于多语言处理的神经模型，本质就是将不同语言下具有相似意思的单词进行对齐操作，映射到同一向量上。</p>
+<h5 id="多语言建模">多语言建模</h5>
+<p>该方法是利用BERT之类的模型，使用一个模型对多种语言进行建模，从而得到一个通用语言模型。这里有个特点就是：特定语言的信息被存储在更上方的transformer层中，更通用的独立于语言的表示被存储在较低层中。</p>
+<h5 id="特定领域的预训练">特定领域的预训练</h5>
+<p>该方法旨在将通用领域下的预训练模型迁移到特定领域，比如临床诊断领域等。</p>
+<h5 id="其他机器学习方法">其他机器学习方法</h5>
+<p>主要有元学习方法和zero-shot或者few-shot方法，这部分没有详细的展开介绍。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/low-resource/" rel="tag">low-resource</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/survey/" rel="tag">survey</a></li></ul>
+
+    </footer>
+  </div>
+
+    
+ 
+   
+</article>
+
+    
+    <article
   id="post-Heterogeneous-Graph-Attention-Networks-for-Semi-supervised-Short-Text-Classification"
   class="article article-type-post"
   itemscope
@@ -686,63 +781,6 @@
     <footer class="article-footer">
        
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Knowledge-power/" rel="tag">Knowledge power</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/text-classification/" rel="tag">text classification</a></li></ul>
-
-    </footer>
-  </div>
-
-    
- 
-   
-</article>
-
-    
-    <article
-  id="post-Graph-Convolutional-Networks-for-Text-Classification"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h2 itemprop="name">
-  <a class="article-title" href="/2020/11/30/Graph-Convolutional-Networks-for-Text-Classification/"
-    >Graph Convolutional Networks for Text Classification</a> 
-</h2>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2020/11/30/Graph-Convolutional-Networks-for-Text-Classification/" class="article-date">
-  <time datetime="2020-11-30T05:51:33.000Z" itemprop="datePublished">2020-11-30</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/paper-notes/">paper notes</a>
-  </div>
-   
-    </div>
-      
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h3 id="概述">概述</h3>
-<p>TextCNN、RNN等模型在NLP领域应用广泛，但是这两种深度网络捕获的是局部连续单词序列中的语义和句法信息，会忽略掉非连续的、长距离的语义特征（全局特征），这也限制了模型性能的上限。文章使用了最近兴起的GCN模型解决文本分类问题，图神经网络（GNN）既能有效地捕获节点之间的丰富关系，也能保留图中的全局结构信息，这对改善CNN和RNN模型难以捕获全局特征带来了希望。</p> 
-      <a class="article-more-link" href="/2020/11/30/Graph-Convolutional-Networks-for-Text-Classification/"
-        >阅读更多...</a
-      >
-       
-      <!-- reward -->
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <footer class="article-footer">
-       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCN/" rel="tag">GCN</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/text-classification/" rel="tag">text classification</a></li></ul>
 
     </footer>
   </div>
