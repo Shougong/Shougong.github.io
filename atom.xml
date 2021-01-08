@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-01-08T02:23:53.817Z</updated>
+  <updated>2021-01-08T09:24:29.656Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,11 +21,25 @@
     <link href="http://example.com/2021/01/08/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%B8%80/"/>
     <id>http://example.com/2021/01/08/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%B8%80/</id>
     <published>2021-01-08T02:23:53.000Z</published>
-    <updated>2021-01-08T02:23:53.817Z</updated>
+    <updated>2021-01-08T09:24:29.656Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3</summary>
+        
+      
     
     
     
     
+    <category term="transformer" scheme="http://example.com/tags/transformer/"/>
+    
+    <category term="python" scheme="http://example.com/tags/python/"/>
+    
+    <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
     
   </entry>
   
@@ -144,9 +158,9 @@
     <category term="paper notes" scheme="http://example.com/categories/paper-notes/"/>
     
     
-    <category term="TextGCN" scheme="http://example.com/tags/TextGCN/"/>
-    
     <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
+    
+    <category term="TextGCN" scheme="http://example.com/tags/TextGCN/"/>
     
   </entry>
   
