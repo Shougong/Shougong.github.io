@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-01-08T09:24:29.656Z</updated>
+  <updated>2021-01-08T09:25:09.806Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,16 +21,19 @@
     <link href="http://example.com/2021/01/08/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%B8%80/"/>
     <id>http://example.com/2021/01/08/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%B8%80/</id>
     <published>2021-01-08T02:23:53.000Z</published>
-    <updated>2021-01-08T09:24:29.656Z</updated>
+    <updated>2021-01-08T09:25:09.806Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;h3</summary>
-        
-      
+    <summary type="html">&lt;h3 id=&quot;写在开头&quot;&gt;写在开头&lt;/h3&gt;
+&lt;p&gt;最近在做实验的时候，发现复现的一个模型在误分类上存在着attention过多考虑一些多次出现的词的情况，导致模型在捕捉关键特征上性能比较欠缺，实验后对模型进行分析，可能是引入concept后，因为attention是对整个concept构成的文本序列做的，不同entity对应的concept混合在一起后，会造成比较严重的歧义，合理的做法应当是让概念词仅作用于对应的entity，这样子会有更好的效果，此外，由于entity可能是多义的，比如&amp;quot;apple&amp;quot;，在现代语义中，有苹果（水果）和苹果公司两个含义在其中，因此需要做区分，直接使用attention可能忽视了原始文本中的上下文语义关系，最后做出误判，因此，选择合适的concept可能需要借助mask机制来实现，为此，记录下学习transformer实现的代码，本门的版本是借鉴了哈工大SCIR实验室翻译的哈佛大学的复现版本[1]。&lt;/p&gt;
+&lt;h3 id=&quot;requirements&quot;&gt;requirements&lt;/h3&gt;
+&lt;figure class=&quot;highlight txt&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;torch&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;numpy&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;matplotlib&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;spacy&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;torchtext&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;seaborn&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;python==3.7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;以上版本选择与当前环境兼容的即可。&lt;/p&gt;
+&lt;p&gt;创建Transformer.py文件，引入上述库的模块。&lt;/p&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; numpy &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; np&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; torch&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; torch.nn &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; nn&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; torch.nn.functional &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; F&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; math, copy, time&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; torch.autograd &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; Variable&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; matplotlib.pyplot &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; plt &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; seaborn&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;seaborn.set_context(context=&lt;span class=&quot;string&quot;&gt;&amp;#x27;talk&amp;#x27;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;模型简介&quot;&gt;模型简介&lt;/h3&gt;
+&lt;img src=&quot;/2021/01/08/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%B8%80/image-20210108104557302.png&quot; alt=&quot;image-20210108104557302&quot; style=&quot;zoom:80%;&quot;&gt;
+&lt;p&gt;Figure 1是Transformer模型的整体架构图，遵循标准的Encoder-Decoder结构，这一架构的前身源于Seq2Seq + Att模型，首先看左边的Encoder部分，Encoder编码器由embedding层、位置编码（Positional Encoding）和N层（论文采用了6层）子层组成（特征提取层，这样的子层后来被叫做transformer层）。右边的Decoder解码器部分与Encoder部分在结构上比较接近，也是由embedding层、位置编码和N层子层组成。对于不同的应用，embedding层所使用的预训练向量是不同的，可能是但是这篇文章仅仅是介绍transformer模型的实现，因此，使用相同的向量空间。&lt;/p&gt;</summary>
     
     
     
