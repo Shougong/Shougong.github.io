@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Transformer模型实现(一)</title>
+    <url>/2021/01/08/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%B8%80/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>A Survey on Recent Approaches for Natural Language Processing in Low-Resource Scenarios</title>
     <url>/2020/12/17/A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios/</url>
     <content><![CDATA[<h3 id="概述">概述</h3>
@@ -8,7 +13,7 @@
 <p>下图是文章对一些Low-Resource方法的调查总结。</p>
 <p><img src="/2020/12/17/A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios/image-20201217201950046.png" alt="image-20201217201950046"></p>
 <h3 id="low-resource定义">Low-Resource定义</h3>
-<p>文章对Low-Resource进行了定义，即涵盖了低数据量的语言和某种特定领域的语言，在数据上具有低质量、数据集大小有限的特点，这样的情况称之为Low-Resource。</p>
+<p>文章对Low-Resource进行了定义，即涵盖了低数据量的语言和某种特定领域的语言，在数据上具有低质量、数据集大小有限的特点，这样的情况称之为Low-Resource。<a id="more"></a></p>
 <h3 id="资源可靠性">资源可靠性</h3>
 <p>文章从资源可靠性角度将Low-Resource设置分成三种：特定任务标签、无标签语言文本和辅助数据。这部分实际上是从数据可靠性维度，对利用资源的具体场景进行了探讨。</p>
 <ul>

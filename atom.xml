@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-12-17T13:19:05.708Z</updated>
+  <updated>2021-01-08T02:23:53.817Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,20 +17,32 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Transformer模型实现(一)</title>
+    <link href="http://example.com/2021/01/08/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%B8%80/"/>
+    <id>http://example.com/2021/01/08/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%B8%80/</id>
+    <published>2021-01-08T02:23:53.000Z</published>
+    <updated>2021-01-08T02:23:53.817Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>A Survey on Recent Approaches for Natural Language Processing in Low-Resource Scenarios</title>
     <link href="http://example.com/2020/12/17/A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios/"/>
     <id>http://example.com/2020/12/17/A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios/</id>
     <published>2020-12-17T11:48:43.000Z</published>
-    <updated>2020-12-17T13:19:05.708Z</updated>
+    <updated>2021-01-08T02:24:58.795Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html">&lt;h3</summary>
-        
-      
+    <summary type="html">&lt;h3 id=&quot;概述&quot;&gt;概述&lt;/h3&gt;
+&lt;p&gt;这篇文章是最近才发表到arxiv上的，是对近期low-resource方向的一个总结。因为无论是短文本相关的分类还是现阶段nlp领域的关注方向，目前都着眼于解决数据或者特征稀疏情况下，如何保证优秀性能的问题，希望能对自己有一些启发。&lt;/p&gt;
+&lt;p&gt;下图是文章对一些Low-Resource方法的调查总结。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2020/12/17/A-Survey-on-Recent-Approaches-for-Natural-Language-Processing-in-Low-Resource-Scenarios/image-20201217201950046.png&quot; alt=&quot;image-20201217201950046&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;low-resource定义&quot;&gt;Low-Resource定义&lt;/h3&gt;
+&lt;p&gt;文章对Low-Resource进行了定义，即涵盖了低数据量的语言和某种特定领域的语言，在数据上具有低质量、数据集大小有限的特点，这样的情况称之为Low-Resource。&lt;/p&gt;</summary>
     
     
     
