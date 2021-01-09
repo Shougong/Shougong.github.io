@@ -3,7 +3,25 @@
   <entry>
     <title>pytorch常用方法整理</title>
     <url>/2021/01/08/pytorch%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h3 id="arange-函数">arange()函数</h3>
+<p>该函数与python中的range一样，生成一个tensor类型的行向量，也是左闭右开。</p>
+<h4 id="参数：">参数：</h4>
+<p>​		  start：arange的开始。</p>
+<p>​		  end：arange的结束。</p>
+<p>​		  step：时间步。</p>
+<h4 id="example：">Example：</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">data = torch.arange(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">print(data)</span><br><span class="line"><span class="comment"># output</span></span><br><span class="line"><span class="comment"># [0, 2, 4, 6, 8]</span></span><br></pre></td></tr></table></figure>
+<h3 id="transpose-方法">transpose()方法</h3>
+<p>该函数是pytorch中的转置函数，用于将任意一个tensor矩阵中的两个维度进行转置，且支持矩阵维度的反向表示。</p>
+<h4 id="param：">Param：</h4>
+<p>​		dim0：维度0</p>
+<p>​		dim1：维度1.</p>
+<h4 id="example：">Example：</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line">data = torch.FloatTensor(<span class="number">10</span>, <span class="number">5</span>)</span><br><span class="line">print(data.shape)</span><br><span class="line"><span class="comment"># (10, 5)</span></span><br><span class="line"><span class="comment"># data = data.transpose(1, 0)</span></span><br><span class="line"><span class="comment"># print(data.shape)</span></span><br><span class="line"><span class="comment"># (5, 10)</span></span><br><span class="line">data = data.transpose(-<span class="number">1</span>, -<span class="number">2</span>)</span><br><span class="line">print(data.shape)</span><br><span class="line"><span class="comment"># (5, 10)</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>pytorch</tag>
+      </tags>
   </entry>
   <entry>
     <title>Transformer模型实现(一)</title>
@@ -156,9 +174,9 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 <p>[4] 层归一化介绍，<a href="https://zhuanlan.zhihu.com/p/69502704">https://zhuanlan.zhihu.com/p/69502704</a></p>
 ]]></content>
       <tags>
+        <tag>pytorch</tag>
         <tag>transformer</tag>
         <tag>python</tag>
-        <tag>pytorch</tag>
       </tags>
   </entry>
   <entry>

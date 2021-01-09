@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-01-08T13:32:32.103Z</updated>
+  <updated>2021-01-09T09:18:43.547Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,11 +21,24 @@
     <link href="http://example.com/2021/01/08/pytorch%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/"/>
     <id>http://example.com/2021/01/08/pytorch%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/</id>
     <published>2021-01-08T13:32:32.000Z</published>
-    <updated>2021-01-08T13:32:32.103Z</updated>
+    <updated>2021-01-09T09:18:43.547Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;arange-函数&quot;&gt;arange()函数&lt;/h3&gt;
+&lt;p&gt;该函数与python中的range一样，生成一个tensor类型的行向量，也是左闭右开。&lt;/p&gt;
+&lt;h4 id=&quot;参数：&quot;&gt;参数：&lt;/h4&gt;
+&lt;p&gt;​		 </summary>
+        
+      
     
     
     
     
+    <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
     
   </entry>
   
@@ -51,11 +64,11 @@
     
     
     
+    <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
+    
     <category term="transformer" scheme="http://example.com/tags/transformer/"/>
     
     <category term="python" scheme="http://example.com/tags/python/"/>
-    
-    <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
     
   </entry>
   
