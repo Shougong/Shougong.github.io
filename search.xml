@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Transformer模型实现(二)</title>
+    <url>/2021/01/10/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%BA%8C/</url>
+    <content><![CDATA[<h3 id="写在开头">写在开头</h3>
+<p>前面一节复现了Transformer模型，但是不曾将其进行应用，这一篇主要用来记录自己使用Transformer模型进行文本分类的过程。</p>
+<h3 id="前期准备">前期准备</h3>
+<p>前面说过，Transformer模型由Encoder和Decoder构成，遵循Seq2Seq的结构模式，但是，想一下我们做分类的时候，通常是怎么做的呢？对于分类问题，我们通常使用模型学习数据的表示，比如使用BiLSTM模型，我们使用模型最后一个时间步的输出来作为输入样本的表示，这实际上是对样本进行了编码，然后送入一个全连接的神经网络进行分类，也就是说，对于分类问题，我们只需要得到输入句子的编码表示就可以了。回顾Transformer的架构，答案呼之欲出，我们只需要使用Transformer的encoder结构就可以支撑我们完成对样本的分类了。<a id="more"></a></p>
+<h3 id="模型">模型</h3>
+<p>有了前面的分析，结合上一节的Transformer代码，我们就可以对模型进行编写了，具体代码如下所示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在上述代码的基础下，编写合适的数据预处理函数以及训练逻辑，即可完成，受篇幅限制，将完整代码上传到了github上。下面是模型在Trec数据集上的表现，但是，受限于该数据集比较小，只有5452条训练样本，500条测试样本，模型表现出比较严重的过拟合现象，此外，由于该数据集的样本比较短，存在数据稀疏特征，这也是限制模型性能提升的一大原因。</p>
+]]></content>
+      <tags>
+        <tag>transformer</tag>
+        <tag>python</tag>
+        <tag>pytorch</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>pytorch常用方法整理</title>
     <url>/2021/01/08/pytorch%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E6%95%B4%E7%90%86/</url>
     <content><![CDATA[<h3 id="arange-函数">arange()函数</h3>
@@ -174,9 +192,9 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 <p>[4] 层归一化介绍，<a href="https://zhuanlan.zhihu.com/p/69502704">https://zhuanlan.zhihu.com/p/69502704</a></p>
 ]]></content>
       <tags>
-        <tag>pytorch</tag>
         <tag>transformer</tag>
         <tag>python</tag>
+        <tag>pytorch</tag>
       </tags>
   </entry>
   <entry>

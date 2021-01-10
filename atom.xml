@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-01-09T09:18:43.547Z</updated>
+  <updated>2021-01-10T03:55:05.680Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Transformer模型实现(二)</title>
+    <link href="http://example.com/2021/01/10/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%BA%8C/"/>
+    <id>http://example.com/2021/01/10/Transformer%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0-%E4%BA%8C/</id>
+    <published>2021-01-10T03:42:15.000Z</published>
+    <updated>2021-01-10T03:55:05.680Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;写在开头&quot;&gt;写在开头&lt;/h3&gt;
+&lt;p&gt;前面一节复现了Transformer模型，但是不曾将其进行应用，这一篇主要用来记录自己使用Transformer模型进行文本分类的过程。&lt;/p&gt;
+&lt;h3 id=&quot;前期准备&quot;&gt;前期准备&lt;/h3&gt;
+&lt;p&gt;前面说过，Transformer模型由Encoder和Decoder构成，遵循Seq2Seq的结构模式，但是，想一下我们做分类的时候，通常是怎么做的呢？对于分类问题，我们通常使用模型学习数据的表示，比如使用BiLSTM模型，我们使用模型最后一个时间步的输出来作为输入样本的表示，这实际上是对样本进行了编码，然后送入一个全连接的神经网络进行分类，也就是说，对于分类问题，我们只需要得到输入句子的编码表示就可以了。回顾Transformer的架构，答案呼之欲出，我们只需要使用Transformer的encoder结构就可以支撑我们完成对样本的分类了。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="transformer" scheme="http://example.com/tags/transformer/"/>
+    
+    <category term="python" scheme="http://example.com/tags/python/"/>
+    
+    <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
+    
+  </entry>
   
   <entry>
     <title>pytorch常用方法整理</title>
@@ -64,11 +88,11 @@
     
     
     
-    <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
-    
     <category term="transformer" scheme="http://example.com/tags/transformer/"/>
     
     <category term="python" scheme="http://example.com/tags/python/"/>
+    
+    <category term="pytorch" scheme="http://example.com/tags/pytorch/"/>
     
   </entry>
   
